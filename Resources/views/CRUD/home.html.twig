@@ -6,21 +6,21 @@
     {{ knp_menu_render(admin.sidemenu(action), {
         'currentClass' : 'active',
         'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}
-       
+
 {% endblock %}
 
 
 {% block actions %}
     <li>
         {% if app.request.get('persist') == true %}
-            <a class="sonata-action-element" href="{{ admin.generateUrl('list', {'persist' : 0 }) }}" style="background-color: greenyellow">
-                <i class="fa fa-edit"></i>
-                Testing
-            </a>
-        {% else %}
-            <a class="sonata-action-element" href="{{ admin.generateUrl('list', {'persist' : 1 }) }}" style="background-color: orangered; color: #ddd">
+            <a class="sonata-action-element" href="{{ admin.generateUrl('list', {'persist' : 0 }) }}" style="background-color: orangered; color: #ddd">
                 <i class="fa fa-save"></i>
                 Persisting
+            </a>
+        {% else %}
+            <a class="sonata-action-element" href="{{ admin.generateUrl('list', {'persist' : 1 }) }}"  style="background-color: greenyellow">
+                <i class="fa fa-edit"></i>
+                Testing
             </a>
         {% endif %}
     </li>

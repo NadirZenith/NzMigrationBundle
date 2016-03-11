@@ -6,7 +6,7 @@
 
     <services>
         
-        <service id="nz_wp_migration.admin" class="Nz\MigrationBundle\Admin\MigrationAdmin">
+        <service id="nz_migration.admin" class="Nz\MigrationBundle\Admin\MigrationAdmin">
             <tag name="sonata.admin" manager_type="orm" group="nz_wp_migration" label="migration_app"  label_catalogue="%nz.shop.admin.shop.translation_domain%" label_translator_strategy="sonata.admin.label.strategy.underscore" />
 
             <argument />
