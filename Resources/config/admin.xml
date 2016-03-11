@@ -12,14 +12,7 @@
             <argument />
             <argument />
             <argument>NzWpMigrationBundle:Crud/MigrationAdmin</argument>
-            <!--
-            <call method="addChild">
-                <argument type="service" id="nz_wordpress.admin.user" />
-            </call>
-            <call method="addChild">
-                <argument type="service" id="nz_wordpress.admin.post" />
-            </call>
-            -->
+          
             <call method="setTemplate">
                 <argument>list</argument>
                 <argument>NzWpMigrationBundle:CRUD:home.html.twig</argument>
@@ -38,9 +31,7 @@
 
             </call>
             
-            
         </service>
-        
         
     </services>
 </container>

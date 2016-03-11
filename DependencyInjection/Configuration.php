@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('nz_wp_migration');
+        $rootNode = $treeBuilder->root('nz_migration');
 
         $this->addUserSection($rootNode);
         $this->addPostsSection($rootNode);

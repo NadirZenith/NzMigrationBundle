@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Nz\MigrationBundle\DependencyInjection\Compiler\MigratorsCompilerPass;
 use Nz\MigrationBundle\DependencyInjection\Compiler\ModifiersCompilerPass;
 
-class NzWpMigrationBundle extends Bundle
+class NzMigrationBundle extends Bundle
 {
 
     public function build(ContainerBuilder $container)

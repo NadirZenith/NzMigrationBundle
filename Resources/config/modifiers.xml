@@ -57,14 +57,12 @@
             <tag name="nz.wp.modifier" type="wpid" />
             
             <argument type="service" id="sonata.user.manager.user" />
-            <!--<argument type="service" id="doctrine" />-->
         </service>
         
         <service id="nz.wp_migration.modifier.value"  class="%nz.wp.modifier.value.class%" public="false">
             <tag name="nz.wp.modifier" type="value" />
             
             <argument type="service" id="sonata.user.manager.user" />
-            <!--<argument type="service" id="doctrine" />-->
         </service>
         
     </services>
