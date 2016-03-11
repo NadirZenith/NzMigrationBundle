@@ -1,0 +1,35 @@
+{
+    "name": "nz/migration-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony Nz MigrationBundle with sonata admin",
+    "keywords": ["migration", "wordpress", "entity", "orm", "sonta"],
+    "homepage": "https://nzlab.es",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nadir Zenith",
+            "email": "2cb.md2@gmail.com",
+            "homepage": "https://nzlab.es"
+        }
+    ],
+    "require": {
+        "symfony/framework-bundle": "~2.3|~3.0",
+        "symfony/dom-crawler": "~2.1",
+        "symfony/css-selector": "~2.1"
+    },
+    "require-dev": {
+        "sonata-project/doctrine-orm-admin-bundle": "~2.3",
+        "sonata-project/admin-bundle": "~2.3",
+        "sonata-project/formatter-bundle": "~2.2"
+    },
+    "suggest": {
+        "nz/wordpress-bundle": "dev-master"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Nz\\MigrationBundle\\": ""
+        }
+    }
+}

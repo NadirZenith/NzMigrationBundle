@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="nz.wp.migrator.user.default.class">Nz\MigrationBundle\Migrator\DefaultUserMigrator</parameter>
+        <parameter key="nz.wp.migrator.post.default.class">Nz\MigrationBundle\Migrator\DefaultPostMigrator</parameter>
+    </parameters>
+    
+    <services>
+        
+        <!--          users -->
+        <service id="nz.wp_migration.user_migrator_default"  class="%nz.wp.migrator.user.default.class%">
+            <!--<argument>AppBundle\Entity\User\User</argument>-->
+            <argument />
+            
+            <call method="setModifierPool">
+                <argument type="service" id="nz.wp.modifier.pool" />
+            </call>
+
+            <tag name="nz.wp.migrator" type="user" />
+        </service>  
+        
+        <!--          posts -->
+<!--        
+        -->
+        <service id="nz.wp_migration.post_migrator_default"  class="%nz.wp.migrator.post.default.class%">
+            <argument />
+            
+            <call method="setModifierPool">
+                <argument type="service" id="nz.wp.modifier.pool" />
+            </call>
+
+            <tag name="nz.wp.migrator" type="user" />
+        </service>   
+
+    </services>
+</container>

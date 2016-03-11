@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        
+        <service id="nz_wp_migration.admin" class="Nz\MigrationBundle\Admin\MigrationAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="nz_wp_migration" label="migration_app"  label_catalogue="%nz.shop.admin.shop.translation_domain%" label_translator_strategy="sonata.admin.label.strategy.underscore" />
+
+            <argument />
+            <argument />
+            <argument>NzWpMigrationBundle:Crud/MigrationAdmin</argument>
+            <!--
+            <call method="addChild">
+                <argument type="service" id="nz_wordpress.admin.user" />
+            </call>
+            <call method="addChild">
+                <argument type="service" id="nz_wordpress.admin.post" />
+            </call>
+            -->
+            <call method="setTemplate">
+                <argument>list</argument>
+                <argument>NzWpMigrationBundle:CRUD:home.html.twig</argument>
+            </call>
+            <call method="setTemplate">
+                <argument>users</argument>
+                <argument>NzWpMigrationBundle:CRUD:users.html.twig</argument>
+            </call>
+            <call method="setTemplate">
+                <argument>users_metas</argument>
+                <argument>NzWpMigrationBundle:CRUD:users_metas.html.twig</argument>
+            </call>
+            <call method="setTemplate">
+                <argument>post_types</argument>
+                <argument>NzWpMigrationBundle:CRUD:post_types.html.twig</argument>
+
+            </call>
+            
+            
+        </service>
+        
+        
+    </services>
+</container>

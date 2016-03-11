@@ -1,0 +1,46 @@
+
+{% extends 'NzWpMigrationBundle:CRUD:home.html.twig' %}
+
+
+{% block sonata_admin_content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary" >
+                    <div class="box-body table-responsive no-padding">
+                        
+                        <h2>Users {{users|length}}</h2>
+                        <table class="table table-condensed table-striped">
+                            <thead>
+                                <tr> 
+                                    <th>#</th>
+                                    <th>Username</th>
+                                    <th>Slug</th>
+                                    <th>E-mail</th>
+                                    <th>Migrate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                    <tr> 
+                                        <th>{{user.id}}</th>
+                                        <th>{{user.username}}</th>
+                                        <th>{{user.nicename}}</th>
+                                        <th>{{user.email}}</th>
+                                        <th><a title="migrate" href="{{admin.generateUrl('users', {'sub' : 'migrate', 'id' : user.id })}}"><i class="fa fa-object-group"></i></a></th>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
