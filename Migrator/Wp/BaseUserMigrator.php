@@ -3,6 +3,7 @@
 namespace Nz\MigrationBundle\Migrator\Wp;
 
 use Nz\WordpressBundle\Entity\User;
+use Nz\MigrationBundle\Migrator\BaseMigrator;
 
 /**
  * Description of BaseUserMigrator

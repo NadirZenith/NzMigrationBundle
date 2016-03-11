@@ -3,6 +3,7 @@
 namespace Nz\MigrationBundle\Migrator\Wp;
 
 use Nz\WordpressBundle\Entity\Post;
+use Nz\MigrationBundle\Migrator\MigratorInterface;
 
 /**
  *
