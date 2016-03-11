@@ -1,14 +1,14 @@
 <?php
 
-namespace Nz\MigrationBundle\Migrator;
+namespace Nz\MigrationBundle\Migrator\Wp;
 
-use Nz\WordpressBundle\Entity\User;
+use Nz\WordpressBundle\Entity\Post;
 
 /**
  *
  * @author tino
  */
-interface UserMigratorInterface extends MigratorInterface
+interface PostMigratorInterface extends MigratorInterface
 {
 
     /**
@@ -16,7 +16,7 @@ interface UserMigratorInterface extends MigratorInterface
      *
      * @return void
      */
-    public function migrateUser(User $user);
+    public function migratePost(Post $post);
 
     /**
      * Migrate metas

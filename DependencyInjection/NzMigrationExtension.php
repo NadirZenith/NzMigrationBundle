@@ -43,8 +43,6 @@ class NzMigrationExtension extends Extension
 
     protected function configureDefaultMigrators($config, ContainerBuilder $container)
     {
-        /*include 'nzdebug.php';*/
-        /*d($config);*/
         $handler_id = 'nz.wp.migration.handler';
         $definition = $container->getDefinition($handler_id);
         $definition->addMethodCall('setConfig', [$config]);

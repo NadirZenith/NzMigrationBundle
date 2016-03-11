@@ -1,6 +1,6 @@
 <?php
 
-namespace Nz\MigrationBundle\Migrator;
+namespace Nz\MigrationBundle\Migrator\Wp;
 
 use Nz\WordpressBundle\Entity\User;
 use Nz\MigrationBundle\Modifier\ModifierPoolInterface;
