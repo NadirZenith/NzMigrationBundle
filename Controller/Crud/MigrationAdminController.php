@@ -262,7 +262,7 @@ class MigrationAdminController extends Controller
         $metas = $qb->getQuery()->getResult();
 
                      return $this->render($this->admin->getTemplate('post_types'), array( 
-                /* 'base_template' => 'NzWpMigrationBundle:CRUD:home.html.twig', */
+                /* 'base_template' => 'NzMigrationBundle:CRUD:home.html.twig', */
                 'action' => 'post-types',
                 'types' => $types,
                 'system_types' => $system_types,

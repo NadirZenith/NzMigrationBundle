@@ -11,23 +11,23 @@
 
             <argument />
             <argument />
-            <argument>NzWpMigrationBundle:Crud/MigrationAdmin</argument>
+            <argument>NzMigrationBundle:Crud/MigrationAdmin</argument>
           
             <call method="setTemplate">
                 <argument>list</argument>
-                <argument>NzWpMigrationBundle:CRUD:home.html.twig</argument>
+                <argument>NzMigrationBundle:CRUD:home.html.twig</argument>
             </call>
             <call method="setTemplate">
                 <argument>users</argument>
-                <argument>NzWpMigrationBundle:CRUD:users.html.twig</argument>
+                <argument>NzMigrationBundle:CRUD:users.html.twig</argument>
             </call>
             <call method="setTemplate">
                 <argument>users_metas</argument>
-                <argument>NzWpMigrationBundle:CRUD:users_metas.html.twig</argument>
+                <argument>NzMigrationBundle:CRUD:users_metas.html.twig</argument>
             </call>
             <call method="setTemplate">
                 <argument>post_types</argument>
-                <argument>NzWpMigrationBundle:CRUD:post_types.html.twig</argument>
+                <argument>NzMigrationBundle:CRUD:post_types.html.twig</argument>
 
             </call>
             

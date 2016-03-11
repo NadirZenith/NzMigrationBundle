@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Definition;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class NzWpMigrationExtension extends Extension
+class NzMigrationExtension extends Extension
 {
 
     /**

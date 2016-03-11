@@ -5,6 +5,6 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="nz_wp_migration_homepage" path="/hello/{name}">
-        <default key="_controller">NzWpMigrationBundle:Default:index</default>
+        <default key="_controller">NzMigrationBundle:Default:index</default>
     </route>
 </routes>
