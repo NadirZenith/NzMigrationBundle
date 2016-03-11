@@ -43,26 +43,30 @@ class NzMigrationExtension extends Extension
 
     protected function configureDefaultMigrators($config, ContainerBuilder $container)
     {
+        /*include 'nzdebug.php';*/
+        /*d($config);*/
         $handler_id = 'nz.wp.migration.handler';
         $definition = $container->getDefinition($handler_id);
         $definition->addMethodCall('setConfig', [$config]);
         $container->setDefinition($handler_id, $definition);
 
+        if ($config['wp']) {
+            $config = $config['wp'];
+            $user_migrator_id = $config['user']['service_id'];
+            $definition = $container->getDefinition($user_migrator_id);
 
-        $user_migrator_id = $config['user']['service_id'];
-        $definition = $container->getDefinition($user_migrator_id);
+            $definition->replaceArgument(0, $config['user']['target_entity']);
+            $definition->addMethodCall('setMigrationFields', [$config['user']['fields']]);
+            $definition->addMethodCall('setMigrationMetas', [$config['user']['metas']]);
 
-        $definition->replaceArgument(0, $config['user']['target_entity']);
-        $definition->addMethodCall('setMigrationFields', [$config['user']['fields']]);
-        $definition->addMethodCall('setMigrationMetas', [$config['user']['metas']]);
-
-        $container->setDefinition($user_migrator_id, $definition);
+            $container->setDefinition($user_migrator_id, $definition);
 
 
-        foreach ($config['posts']as $post_type => $config) {
-            $definition = $container->getDefinition($config["service_id"]);
-            $definition->addMethodCall('addPostTypeConfig', [$post_type, $config]);
-            $container->setDefinition($config["service_id"], $definition);
+            foreach ($config['posts']as $post_type => $config) {
+                $definition = $container->getDefinition($config["service_id"]);
+                $definition->addMethodCall('addPostTypeConfig', [$post_type, $config]);
+                $container->setDefinition($config["service_id"], $definition);
+            }
         }
     }
 }

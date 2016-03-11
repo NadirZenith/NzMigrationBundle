@@ -21,8 +21,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('nz_migration');
 
-        $this->addUserSection($rootNode);
-        $this->addPostsSection($rootNode);
+        $this->addWpSection($rootNode);
         
         return $treeBuilder;
         
@@ -31,52 +30,49 @@ class Configuration implements ConfigurationInterface
     /**
      *  Add user config section
      */
-    private function addUserSection($rootNode){
+    private function addWpSection($rootNode){
         $rootNode
             ->children()
-                ->arrayNode('user')
+                ->node('wp', 'array')
                     ->children()
-                        ->scalarNode('service_id')->info('User migration handler service id')->cannotBeEmpty()->defaultValue('nz.wp_migration.user_migrator_default')->end()
-                        ->scalarNode('src_entity')->info('Src Entity')->cannotBeEmpty()->defaultValue('\Nz\WordpressBundle\Entity\User')->end()
-                        ->scalarNode('target_entity')->info('Migration Entity')->cannotBeEmpty()->end()
-                        ->append($this->addFieldsMappingNode('fields'))
-                        ->append($this->addFieldsMappingNode('metas'))
-                        ->append($this->addFieldsMappingNode('extra'))
-                    ->end()
-                ->end()
-            ->end()
-        ;
-    }
-    
-    /**
-     *  Add posts config section
-     */
-    private function addPostsSection($rootNode){
-        $rootNode
-            ->children()
-                ->arrayNode('posts')
-                    ->beforeNormalization()
-                        ->ifArray()
-                            ->then(function ($a) {
-                                $n = [];
-                                foreach ($a as $k => $v){
-                                    $n[ltrim($k, '_')] = $v;
-                                }
-
-                                return $n;
-                            })
-                        ->end()
-                        ->prototype('array')
-                            ->children()
-                                ->scalarNode('service_id')->info('Post migration handler service id')->cannotBeEmpty()->defaultValue('nz.wp_migration.post_migrator_default')->end()
-                                ->scalarNode('src_entity')->info('Src Entity')->cannotBeEmpty()->defaultValue('\Nz\WordpressBundle\Entity\Post')->end()
-                                ->scalarNode('target_entity')->info('Target Entity')->cannotBeEmpty()->end()
-                                ->append($this->addFieldsMappingNode('fields'))
-                                ->append($this->addFieldsMappingNode('metas'))
-                                ->append($this->addFieldsMappingNode('extra'))
-
+            
+                            ->arrayNode('user')
+                                ->children()
+                                    ->scalarNode('service_id')->info('User migration handler service id')->cannotBeEmpty()->defaultValue('nz.wp_migration.user_migrator_default')->end()
+                                    ->scalarNode('src_entity')->info('Src Entity')->cannotBeEmpty()->defaultValue('\Nz\WordpressBundle\Entity\User')->end()
+                                    ->scalarNode('target_entity')->info('Migration Entity')->cannotBeEmpty()->end()
+                                    ->append($this->addFieldsMappingNode('fields'))
+                                    ->append($this->addFieldsMappingNode('metas'))
+                                    ->append($this->addFieldsMappingNode('extra'))
+                                ->end()
                             ->end()
-                        ->end()
+            
+                            ->arrayNode('posts')
+                                ->beforeNormalization()
+                                    ->ifArray()
+                                        ->then(function ($a) {
+                                            $n = [];
+                                            foreach ($a as $k => $v){
+                                                $n[ltrim($k, '_')] = $v;
+                                            }
+
+                                            return $n;
+                                        })
+                                    ->end()
+                                    ->prototype('array')
+                                        ->children()
+                                            ->scalarNode('service_id')->info('Post migration handler service id')->cannotBeEmpty()->defaultValue('nz.wp_migration.post_migrator_default')->end()
+                                            ->scalarNode('src_entity')->info('Src Entity')->cannotBeEmpty()->defaultValue('\Nz\WordpressBundle\Entity\Post')->end()
+                                            ->scalarNode('target_entity')->info('Target Entity')->cannotBeEmpty()->end()
+                                            ->append($this->addFieldsMappingNode('fields'))
+                                            ->append($this->addFieldsMappingNode('metas'))
+                                            ->append($this->addFieldsMappingNode('extra'))
+
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            
                     ->end()
                 ->end()
             ->end()
