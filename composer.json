@@ -18,13 +18,20 @@
         "symfony/css-selector": "~2.1"
     },
     "require-dev": {
-        "sonata-project/doctrine-orm-admin-bundle": "~2.3",
-        "sonata-project/admin-bundle": "~2.3",
+        "nz/wordpress-bundle": "dev-master",
         "sonata-project/formatter-bundle": "~2.2"
     },
     "suggest": {
-        "nz/wordpress-bundle": "dev-master"
+        "sonata-project/admin-bundle": "~2.3"
     },
+    
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/NadirZenith/NzWordpressBundle.git"
+        }
+       
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {

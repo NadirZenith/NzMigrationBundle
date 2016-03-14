@@ -3,14 +3,13 @@
 namespace Nz\MigrationBundle\Migrator\Wp;
 
 use Nz\WordpressBundle\Entity\Post;
-use Nz\MigrationBundle\Migrator\BaseMigrator;
 
 /**
  * Description of BaseUserMigrator
  *
  * @author tino
  */
-abstract class BasePostMigrator extends BaseMigrator implements PostMigratorInterface
+abstract class BasePostMigrator extends BaseWpMigrator
 {
 
     public function isSrcMigrator($src)

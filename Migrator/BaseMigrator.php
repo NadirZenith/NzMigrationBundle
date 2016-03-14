@@ -18,11 +18,10 @@ abstract class BaseMigrator implements MigratorInterface
 
     public function __construct($targetClass)
     {
-        /*$this->class = $targetClass;*/
-        $this->class = new $targetClass;
+        $this->class = $targetClass;
     }
 
-    public function setUpEntity()
+    public function setUpTarget()
     {
         $this->target = new $this->class;
     }
@@ -35,11 +34,6 @@ abstract class BaseMigrator implements MigratorInterface
     public function getClass()
     {
         return $this->class;
-    }
-
-    public function getExcludedMetasKeysRegex()
-    {
-        return [];
     }
 
     public function setModifierPool(ModifierPoolInterface $modifierPool)

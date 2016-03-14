@@ -1,18 +1,18 @@
 <?php
 
-namespace Nz\MigrationBundle\Migrator;
+namespace Nz\MigrationBundle\Migrator\Wp;
 
-use Nz\WordpressBundle\Entity\Post;
-use Nz\WordpressBundle\Entity\User;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Types\Type;
+use Nz\MigrationBundle\Migrator\MigratorHandlerInterface;
+use Nz\MigrationBundle\Migrator\MigratorPoolInterface;
 
 /**
  * Description of MigratorPool
  *
  * @author tino
  */
-class MigratorHandler implements MigratorHandlerInterface
+class WpMigratorHandler implements MigratorHandlerInterface
 {
 
     protected $doctrine;
@@ -26,21 +26,23 @@ class MigratorHandler implements MigratorHandlerInterface
         $this->doctrine = $doctrine;
     }
 
+    /**
+     * Get src users not migrated
+     */
     private function getUsers($maxResults = 10)
     {
+        // Query already migrated users
         $class = $this->config['user']['target_entity'];
-
         $em2 = $this->getEntityManager($class);
         $qb2 = $em2->createQueryBuilder();
         $targets = $qb2
             ->select('t.wpId')
             ->from($class, 't')
             ->getQuery()
-            /* ->setMaxResults($maxResults) */
             ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY)
         ;
 
-
+        // Query src users
         $class = $this->config['user']['src_entity'];
         $em = $this->getEntityManager($class);
 
@@ -49,6 +51,8 @@ class MigratorHandler implements MigratorHandlerInterface
             ->select('o')
             ->from($class, 'o')
         ;
+
+        // Not in migrated users
         if (!empty($targets)) {
             $qb
                 ->where($qb->expr()->notIn('o.id', ':ids'))
@@ -65,44 +69,36 @@ class MigratorHandler implements MigratorHandlerInterface
         return $users;
     }
 
-    public function getWpIds()
+    /**
+     * Get wpId from already migrated posts
+     */
+    private function getPostsTargetsWpIds()
     {
         $targets = [];
         foreach ($this->config['posts'] as $type => $config) {
-            /* d($type, $config); */
             $em2 = $this->getEntityManager($config['target_entity']);
             $qb2 = $em2->createQueryBuilder();
             $result = $qb2
                 ->select('t.wpId')
                 ->from($config['target_entity'], 't')
                 ->getQuery()
-                /* ->setMaxResults($maxResults) */
                 ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY)
             ;
             $targets = array_merge($targets, $result);
         }
-        /* dd($targets); */
         return $targets;
     }
 
-    public function getSrcObjects($maxResults = 100)
+    /**
+     * Get src objects (users & posts)
+     */
+    private function getSrcObjects($maxResults = 100)
     {
 
         $objects = $this->getUsers($maxResults);
 
         foreach ($this->config['posts'] as $type => $config) {
-            /* d($type, $config); */
-            $em2 = $this->getEntityManager($config['target_entity']);
-            $qb2 = $em2->createQueryBuilder();
-            $targets = $qb2
-                ->select('t.wpId')
-                ->from($config['target_entity'], 't')
-                ->getQuery()
-                /* ->setMaxResults($maxResults) */
-                ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY)
-            ;
             $qb = $this->getEntityManager($config['src_entity'])->createQueryBuilder();
-            /* d($targets); */
             $qb
                 ->select('o')
                 ->from($config['src_entity'], 'o')
@@ -111,6 +107,7 @@ class MigratorHandler implements MigratorHandlerInterface
                 ->andWhere($qb->expr()->like('o.status', ':status'))
                 ->setParameter('status', 'publish')
             ;
+            $targets = $this->getPostsTargetsWpIds();
             if (!empty($targets)) {
                 $qb
                     ->andWhere($qb->expr()->notIn('o.id', ':ids'))
@@ -122,7 +119,6 @@ class MigratorHandler implements MigratorHandlerInterface
                 ->getQuery()
                 ->getResult()
             ;
-            /* d($type,$posts, $config); */
             $objects = array_merge($objects, $posts);
         }
 
@@ -132,8 +128,7 @@ class MigratorHandler implements MigratorHandlerInterface
     public function migrateQueryBuilder($qb, $persist = false)
     {
 
-
-        $wpids = $this->getWpIds();
+        $wpids = $this->getPostsTargetsWpIds();
         if (!empty($wpids)) {
             $qb
                 ->andWhere($qb->expr()->notIn('p.id', ':ids'))
@@ -144,7 +139,7 @@ class MigratorHandler implements MigratorHandlerInterface
         $srcs = $qb->getQuery()
             ->getResult()
         ;
-        /*dd(count($srcs));*/
+
         return $this->migrateObjects($srcs, $persist);
     }
 
@@ -159,7 +154,6 @@ class MigratorHandler implements MigratorHandlerInterface
     {
         ini_set('max_execution_time', 0);
 
-        /* $srcs = $this->getSrcObjects(); */
         $targets = [];
         foreach ($srcs as $src) {
             try {
@@ -181,7 +175,7 @@ class MigratorHandler implements MigratorHandlerInterface
     {
 
         $migrator = $this->pool->getMigratorForSrc($src);
-        $migrator->setUpEntity();
+        $migrator->setUpTarget();
 
         $migrator->migrateSrc($src);
 
@@ -200,12 +194,7 @@ class MigratorHandler implements MigratorHandlerInterface
         foreach ($array_metas as $meta) {
 
             if (false === $this->matchRegexArray($meta->getKey(), $filter_metas)) {
-                if (isset($metas[$meta->getKey()])) {
-                    $key = sprintf('%s_%d', $meta->getKey(), uniqid());
-                    $metas[$key] = $meta->getValue();
-                } else {
-                    $metas[$meta->getKey()] = $meta->getValue();
-                }
+                $metas[] = $meta;
             }
         }
 

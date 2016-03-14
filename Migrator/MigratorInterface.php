@@ -14,11 +14,11 @@ interface MigratorInterface
     public function __construct($class);
 
     /**
-     * Set up migration entity from class.
+     * Set up target
      *
      * @return void
      */
-    public function setUpEntity();
+    public function setUpTarget();
 
     /**
      * Get migrated entity
@@ -41,12 +41,6 @@ interface MigratorInterface
      */
     public function getClass();
 
-    /**
-     * Get excluded metas.
-     *
-     * @return array
-     */
-    public function getExcludedMetasKeysRegex();
 
     /**
      * Is migrator compatible with object.

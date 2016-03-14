@@ -1,0 +1,25 @@
+nz_migration:
+    user:
+        service_id:         nz.wp_migration.user_migrator_default
+        src_entity:         Nz\WordpressBundle\Entity\User
+        target_entity:      Nz\MigrationBundle\Tests\fixtures\TargetEntity
+        fields: 
+            #name:          username #works the same as below but not for testing because of symfony config parser
+            name:           [username, string, []]
+        metas:
+            metaKey:        [meta-key, string, []]
+        extra:
+            key:            [meta-key-2, string, []]
+    posts:
+        post:
+            service_id:     nz.migration.wp.post_migrator_default
+            target_entity:  Nz\MigrationBundle\Tests\fixtures\TargetEntity
+            src_entity:     Nz\WordpressBundle\Entity\Post
+            fields: 
+                name:       [title, string, []]
+            metas:
+                metaKey:    [meta-key, string, []]
+                
+            extra:
+                key:        [meta-key-2, string, []]
+            

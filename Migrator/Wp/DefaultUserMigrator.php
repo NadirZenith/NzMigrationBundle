@@ -3,8 +3,7 @@
 namespace Nz\MigrationBundle\Migrator\Wp;
 
 use Nz\WordpressBundle\Entity\User;
-use Nz\MigrationBundle\Modifier\ModifierPoolInterface;
-use FOS\UserBundle\Model\User as UserModel;
+use Nz\MigrationBundle\Model\Traits\MetaTrait;
 
 /**
  * Description of DefaultUserMigrator
@@ -14,51 +13,42 @@ use FOS\UserBundle\Model\User as UserModel;
 class DefaultUserMigrator extends BaseUserMigrator
 {
 
-    protected $migrationFields = array();
-    protected $migrationMetas = array();
-
-    public function migrateUser(User $user)
-    {
-        $this->migrateSrc($user);
-    }
-
     public function migrateSrc($src)
     {
-        foreach ($this->migrationFields as $setter => $config) {
+
+        foreach ($this->config['fields'] as $setter => $config) {
+
             $getter = sprintf('get%s', ucfirst($config[0]));
+            if (is_callable(array($src, $getter))) {
+                $value = $src->$getter();
+            }
+
             $setter = sprintf('set%s', ucfirst($setter));
+            if (is_callable(array($this->target, $setter))) {
+                $final_value = $this->modifyValue($value, $config[1], $config[2]);
 
-            $value = $src->$getter();
-            $final_value = $this->modifyValue($value, $config[1], $config[2]);
-            $this->target->$setter($final_value);
-        }
-    }
+                if (!is_null($final_value)) {
 
-    public function migrateMetas(array $metas = array())
-    {
-
-        foreach ($this->migrationMetas as $setter => $config) {
-            $meta_key = $config[0];
-
-            if (isset($metas[$meta_key])) {
-                $final_value = $this->modifyValue($metas[$meta_key], $config[1], $config[2]);
-
-                $setter = sprintf('set%s', ucfirst($setter));
-                $this->target->$setter($final_value);
+                    $this->target->$setter($final_value);
+                }
             }
         }
     }
 
     /**
-     * Dependency injection
+     * Migrate wp post metas
      */
-    public function setMigrationFields(array $migrationFields = array())
+    public function migrateMetas(array $metas = array())
     {
-        $this->migrationFields = $migrationFields;
-    }
 
-    public function setMigrationMetas(array $migrationMetas = array())
-    {
-        $this->migrationMetas = $migrationMetas;
+        $fieldsConfig = $this->config['metas'];
+
+        $this->migrateMetasConfig($metas, $fieldsConfig);
+
+        if (in_array(MetaTrait::class, class_uses($this->target))) {
+
+            $fields = $this->config['extra'];
+            $this->migrateExtrasConfig($metas, $fields);
+        }
     }
 }
