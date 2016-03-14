@@ -5,47 +5,47 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="nz.wp.modifier.pool.class">Nz\MigrationBundle\Modifier\ModifierPool</parameter>
+        <parameter key="nz.modifier.pool.class">Nz\MigrationBundle\Modifier\ModifierPool</parameter>
 
-        <parameter key="nz.wp.modifier.string.class">Nz\MigrationBundle\Modifier\StringModifier</parameter>
-        <parameter key="nz.wp.modifier.boolean.class">Nz\MigrationBundle\Modifier\BooleanModifier</parameter>
-        <parameter key="nz.wp.modifier.datetime.class">Nz\MigrationBundle\Modifier\DatetimeModifier</parameter>
-        <parameter key="nz.wp.modifier.thumbnail.class">Nz\MigrationBundle\Modifier\ThumbnailModifier</parameter>
-        <parameter key="nz.wp.modifier.wpid.class">Nz\MigrationBundle\Modifier\WpIdModifier</parameter>
-        <parameter key="nz.wp.modifier.value.class">Nz\MigrationBundle\Modifier\ValueModifier</parameter>
-        <parameter key="nz.wp.modifier.meta.class">Nz\MigrationBundle\Modifier\MetaModifier</parameter>
-        <parameter key="nz.wp.modifier.stack.class">Nz\MigrationBundle\Modifier\StackModifier</parameter>
+        <parameter key="nz.modifier.string.class">Nz\MigrationBundle\Modifier\StringModifier</parameter>
+        <parameter key="nz.modifier.boolean.class">Nz\MigrationBundle\Modifier\BooleanModifier</parameter>
+        <parameter key="nz.modifier.datetime.class">Nz\MigrationBundle\Modifier\DatetimeModifier</parameter>
+        <parameter key="nz.modifier.thumbnail.class">Nz\MigrationBundle\Modifier\ThumbnailModifier</parameter>
+        <parameter key="nz.modifier.wpid.class">Nz\MigrationBundle\Modifier\WpIdModifier</parameter>
+        <parameter key="nz.modifier.value.class">Nz\MigrationBundle\Modifier\ValueModifier</parameter>
+        <parameter key="nz.modifier.meta.class">Nz\MigrationBundle\Modifier\MetaModifier</parameter>
+        <parameter key="nz.modifier.stack.class">Nz\MigrationBundle\Modifier\StackModifier</parameter>
     </parameters>
     
     <services>
         
-        <service id="nz.wp.modifier.pool"  class="%nz.wp.modifier.pool.class%" public="false"/>
+        <service id="nz.modifier.pool"  class="%nz.modifier.pool.class%" public="false"/>
         
-        <service id="nz.wp_migration.modifier.stack"  class="%nz.wp.modifier.stack.class%" public="false">
+        <service id="nz.modifier.stack"  class="%nz.modifier.stack.class%" public="false">
             <tag name="nz.modifier" type="stack" />
             
             <call method="addPool">
-                <argument type="service" id="nz.wp.modifier.pool" />
+                <argument type="service" id="nz.modifier.pool" />
             </call>
         </service>
         
-        <service id="nz.wp_migration.modifier.string"  class="%nz.wp.modifier.string.class%" public="false">
+        <service id="nz.modifier.string"  class="%nz.modifier.string.class%" public="false">
             <tag name="nz.modifier" type="string" />
         </service>
         
-        <service id="nz.wp_migration.modifier.boolean"  class="%nz.wp.modifier.boolean.class%" public="false">
+        <service id="nz.modifier.boolean"  class="%nz.modifier.boolean.class%" public="false">
             <tag name="nz.modifier" type="boolean" />
         </service>
         
-        <service id="nz.wp_migration.modifier.datetime"  class="%nz.wp.modifier.datetime.class%" public="false">
+        <service id="nz.modifier.datetime"  class="%nz.modifier.datetime.class%" public="false">
             <tag name="nz.modifier" type="datetime" />
         </service>
-        <service id="nz.wp_migration.modifier.meta"  class="%nz.wp.modifier.meta.class%" public="false">
+        <service id="nz.modifier.meta"  class="%nz.modifier.meta.class%" public="false">
             <tag name="nz.modifier" type="meta" />
             
         </service>
         
-        <service id="nz.wp_migration.modifier.thumbnail"  class="%nz.wp.modifier.thumbnail.class%" public="false">
+        <service id="nz.modifier.thumbnail"  class="%nz.modifier.thumbnail.class%" public="false">
             <tag name="nz.modifier" type="thumbnail" />
             
             <argument type="service" id="doctrine" />
@@ -53,13 +53,13 @@
             <argument type="service" id="sonata.media.manager.media" />
         </service>
         
-        <service id="nz.wp_migration.modifier.wpid"  class="%nz.wp.modifier.wpid.class%" public="false">
+        <service id="nz.modifier.wpid"  class="%nz.modifier.wpid.class%" public="false">
             <tag name="nz.modifier" type="wpid" />
             
             <argument type="service" id="sonata.user.manager.user" />
         </service>
         
-        <service id="nz.wp_migration.modifier.value"  class="%nz.wp.modifier.value.class%" public="false">
+        <service id="nz.modifier.value"  class="%nz.modifier.value.class%" public="false">
             <tag name="nz.modifier" type="value" />
             
             <argument type="service" id="sonata.user.manager.user" />
