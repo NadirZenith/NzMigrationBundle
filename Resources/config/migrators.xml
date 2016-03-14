@@ -5,33 +5,32 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="nz.wp.migrator.user.default.class">Nz\MigrationBundle\Migrator\Wp\DefaultUserMigrator</parameter>
-        <parameter key="nz.wp.migrator.post.default.class">Nz\MigrationBundle\Migrator\Wp\DefaultPostMigrator</parameter>
+        <parameter key="nz.migration.wp.user_default.class">Nz\MigrationBundle\Migrator\Wp\DefaultUserMigrator</parameter>
+        <parameter key="nz.migration.wp.post_default.class">Nz\MigrationBundle\Migrator\Wp\DefaultPostMigrator</parameter>
     </parameters>
     
     <services>
         
         <!--  wp users -->
-        <service id="nz.wp_migration.user_migrator_default"  class="%nz.wp.migrator.user.default.class%">
-            <!--<argument>AppBundle\Entity\User\User</argument>-->
+        <service id="nz.migration.wp.user_default"  class="%nz.migration.wp.user_default.class%">
             <argument />
             
             <call method="setModifierPool">
-                <argument type="service" id="nz.wp.modifier.pool" />
+                <argument type="service" id="nz.modifier.pool" />
             </call>
 
-            <tag name="nz.wp.migrator" type="user" />
+            <tag name="nz.migrator.wp" type="user" />
         </service>  
         
         <!--  wp posts -->
-        <service id="nz.wp_migration.post_migrator_default"  class="%nz.wp.migrator.post.default.class%">
+        <service id="nz.migration.wp.post_default"  class="%nz.migration.wp.post_default.class%">
             <argument />
             
             <call method="setModifierPool">
-                <argument type="service" id="nz.wp.modifier.pool" />
+                <argument type="service" id="nz.modifier.pool" />
             </call>
 
-            <tag name="nz.wp.migrator" type="user" />
+            <tag name="nz.migrator.wp" type="user" />
         </service>   
 
     </services>

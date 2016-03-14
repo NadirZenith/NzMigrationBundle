@@ -12,10 +12,10 @@
     <services>
         <!--    wp migration handler    -->
         <service id="nz.migration.handler.wp"  class="%nz.migration.handler.wp.class%">
-            <argument type="service" id="nz.migration.pool" />
+            <argument type="service" id="nz.migrator.pool" />
             <argument type="service" id="doctrine" />
         </service>   
-        <service id="wp.migrator" alias="nz.migration.handler"  />
+        <service id="wp.migrator" alias="nz.migration.handler.wp"  />
         
         
         <!--    migrators pool    -->

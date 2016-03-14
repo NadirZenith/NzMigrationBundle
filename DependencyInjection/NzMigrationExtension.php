@@ -43,28 +43,27 @@ class NzMigrationExtension extends Extension
 
     protected function configureDefaultMigrators($config, ContainerBuilder $container)
     {
-        $handler_id = 'nz.wp.migration.handler';
-        $definition = $container->getDefinition($handler_id);
-        $definition->addMethodCall('setConfig', [$config]);
-        $container->setDefinition($handler_id, $definition);
-
         if ($config['wp']) {
             $config = $config['wp'];
+
+            //handler
+            $handler_id = 'nz.migration.handler.wp';
+            $definition = $container->getDefinition($handler_id);
+            $definition->addMethodCall('setConfig', [$config]);
+            $container->setDefinition($handler_id, $definition);
+
+            //user
             $user_migrator_id = $config['user']['service_id'];
             $definition = $container->getDefinition($user_migrator_id);
-
             $definition->replaceArgument(0, $config['user']['target_entity']);
-            $definition->addMethodCall('setMigrationFields', [$config['user']['fields']]);
-            $definition->addMethodCall('setMigrationMetas', [$config['user']['metas']]);
-
+            $definition->addMethodCall('setConfig', [$config['user']]);
             $container->setDefinition($user_migrator_id, $definition);
 
-
-            foreach ($config['posts']as $post_type => $config) {
-                $definition = $container->getDefinition($config["service_id"]);
-                $definition->addMethodCall('addPostTypeConfig', [$post_type, $config]);
-                $container->setDefinition($config["service_id"], $definition);
-            }
+            //posts
+            $post_migrator_id = 'nz.migration.wp.post_default';
+            $definition = $container->getDefinition($post_migrator_id);
+            $definition->addMethodCall('setConfig', [$config['posts']]);
+            $container->setDefinition($post_migrator_id, $definition);
         }
     }
 }
