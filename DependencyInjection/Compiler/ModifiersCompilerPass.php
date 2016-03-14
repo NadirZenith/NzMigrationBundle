@@ -16,13 +16,13 @@ class ModifiersCompilerPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container)
     {
-        if (false === $container->hasDefinition('nz.wp.modifier.pool')) {
+        if (false === $container->hasDefinition('nz.modifier.pool')) {
             return;
         }
 
-        $definition = $container->getDefinition('nz.wp.modifier.pool');
+        $definition = $container->getDefinition('nz.modifier.pool');
 
-        foreach ($container->findTaggedServiceIds('nz.wp.modifier') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds('nz.modifier') as $id => $attributes) {
 
             $definition->addMethodCall('addModifier', array(new Reference($id), $attributes[0]['type']));
         }

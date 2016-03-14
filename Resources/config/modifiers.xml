@@ -22,7 +22,7 @@
         <service id="nz.wp.modifier.pool"  class="%nz.wp.modifier.pool.class%" public="false"/>
         
         <service id="nz.wp_migration.modifier.stack"  class="%nz.wp.modifier.stack.class%" public="false">
-            <tag name="nz.wp.modifier" type="stack" />
+            <tag name="nz.modifier" type="stack" />
             
             <call method="addPool">
                 <argument type="service" id="nz.wp.modifier.pool" />
@@ -30,23 +30,23 @@
         </service>
         
         <service id="nz.wp_migration.modifier.string"  class="%nz.wp.modifier.string.class%" public="false">
-            <tag name="nz.wp.modifier" type="string" />
+            <tag name="nz.modifier" type="string" />
         </service>
         
         <service id="nz.wp_migration.modifier.boolean"  class="%nz.wp.modifier.boolean.class%" public="false">
-            <tag name="nz.wp.modifier" type="boolean" />
+            <tag name="nz.modifier" type="boolean" />
         </service>
         
         <service id="nz.wp_migration.modifier.datetime"  class="%nz.wp.modifier.datetime.class%" public="false">
-            <tag name="nz.wp.modifier" type="datetime" />
+            <tag name="nz.modifier" type="datetime" />
         </service>
         <service id="nz.wp_migration.modifier.meta"  class="%nz.wp.modifier.meta.class%" public="false">
-            <tag name="nz.wp.modifier" type="meta" />
+            <tag name="nz.modifier" type="meta" />
             
         </service>
         
         <service id="nz.wp_migration.modifier.thumbnail"  class="%nz.wp.modifier.thumbnail.class%" public="false">
-            <tag name="nz.wp.modifier" type="thumbnail" />
+            <tag name="nz.modifier" type="thumbnail" />
             
             <argument type="service" id="doctrine" />
             <argument type="service" id="sonata.classification.manager.category" />
@@ -54,13 +54,13 @@
         </service>
         
         <service id="nz.wp_migration.modifier.wpid"  class="%nz.wp.modifier.wpid.class%" public="false">
-            <tag name="nz.wp.modifier" type="wpid" />
+            <tag name="nz.modifier" type="wpid" />
             
             <argument type="service" id="sonata.user.manager.user" />
         </service>
         
         <service id="nz.wp_migration.modifier.value"  class="%nz.wp.modifier.value.class%" public="false">
-            <tag name="nz.wp.modifier" type="value" />
+            <tag name="nz.modifier" type="value" />
             
             <argument type="service" id="sonata.user.manager.user" />
         </service>
