@@ -38,7 +38,7 @@ class Configuration implements ConfigurationInterface
             
                             ->arrayNode('user')
                                 ->children()
-                                    ->scalarNode('service_id')->info('User migration handler service id')->cannotBeEmpty()->defaultValue('nz.wp_migration.user_migrator_default')->end()
+                                    ->scalarNode('service_id')->info('User migration handler service id')->cannotBeEmpty()->defaultValue('nz.migration.wp.user_default')->end()
                                     ->scalarNode('src_entity')->info('Src Entity')->cannotBeEmpty()->defaultValue('\Nz\WordpressBundle\Entity\User')->end()
                                     ->scalarNode('target_entity')->info('Migration Entity')->cannotBeEmpty()->end()
                                     ->append($this->addFieldsMappingNode('fields'))
@@ -61,7 +61,7 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                     ->prototype('array')
                                         ->children()
-                                            ->scalarNode('service_id')->info('Post migration handler service id')->cannotBeEmpty()->defaultValue('nz.wp_migration.post_migrator_default')->end()
+                                            ->scalarNode('service_id')->info('Post migration handler service id')->cannotBeEmpty()->defaultValue('nz.migration.wp.post_default')->end()
                                             ->scalarNode('src_entity')->info('Src Entity')->cannotBeEmpty()->defaultValue('\Nz\WordpressBundle\Entity\Post')->end()
                                             ->scalarNode('target_entity')->info('Target Entity')->cannotBeEmpty()->end()
                                             ->append($this->addFieldsMappingNode('fields'))
