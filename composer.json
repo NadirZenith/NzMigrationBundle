@@ -2,7 +2,7 @@
     "name": "nz/migration-bundle",
     "type": "symfony-bundle",
     "description": "Symfony Nz MigrationBundle with sonata admin",
-    "keywords": ["migration", "wordpress", "entity", "orm", "sonta"],
+    "keywords": ["migration", "wordpress", "entity", "orm", "sonata"],
     "homepage": "https://nzlab.es",
     "license": "MIT",
     "authors": [
