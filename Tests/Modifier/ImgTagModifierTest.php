@@ -98,7 +98,7 @@ class ImgTagModifierTest extends \PHPUnit_Framework_TestCase
         $options = [
             /* 'str_replace' => array('/files', __DIR__ . '/..') */
             'path_replace' => array('/fixtures', __DIR__ . '/../fixtures'),
-            'media_class' => \Sonata\MediaBundle\Model\Media::class
+            'media_class' => \Nz\MigrationBundle\Tests\fixtures\MediaTest::class
         ];
         return array(
             //simple 

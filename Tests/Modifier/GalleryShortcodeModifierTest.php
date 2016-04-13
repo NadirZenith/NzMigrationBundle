@@ -58,13 +58,12 @@ class GalleryShortcodeModifierTest extends \PHPUnit_Framework_TestCase
             ->getMock()
         ;
         $doctrine->method("getManagerForClass")->will($this->returnValue($em));
-        /*$doctrine->method("isOpen")->will($this->returnValue(true));*/
 
         $categoryManager = $this->getMockBuilder(CategoryManager::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $category= $this->getMockBuilder(Category::class)
+        $category = $this->getMockBuilder(Category::class)
             ->getMock()
         ;
         $categoryManager
@@ -92,7 +91,10 @@ class GalleryShortcodeModifierTest extends \PHPUnit_Framework_TestCase
     public static function getTestData()
     {
         $options = [
-            'base_path' => __DIR__
+            'base_path' => __DIR__,
+            'media_class' => \Nz\MigrationBundle\Tests\fixtures\MediaTest::class,
+            'gallery_class' => \Nz\MigrationBundle\Tests\fixtures\GalleryTest::class,
+            'gallery_has_media_class' => \Nz\MigrationBundle\Tests\fixtures\GalleryHasMediaTest::class
         ];
         return array(
             array('[gallery ids="240,122,119"]', '<% gallery 0, "abstract" %>', $options),

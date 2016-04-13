@@ -5,11 +5,9 @@ namespace Nz\MigrationBundle\Modifier;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sonata\ClassificationBundle\Entity\CategoryManager;
 use Nz\WordpressBundle\Entity\Post;
-use AppBundle\Entity\Media\Gallery;
-use AppBundle\Entity\Media\GalleryHasMedia;
-use AppBundle\Entity\Media\Media;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Sonata\CoreBundle\Model\ManagerInterface;
+
 /**
  * Description of StringModifier
  *
@@ -65,7 +63,7 @@ class GalleryShortcodeModifier implements ModifierInterface
 
     public function modify($value, array $options = array())
     {
-        /*d($value);*/
+        /* d($value); */
         $options = $this->normalizeOptions($options);
         list($groups, $matches) = $this->getGalleriesIds($value);
         if (empty($groups)) {
@@ -124,7 +122,7 @@ class GalleryShortcodeModifier implements ModifierInterface
         }
         $value = str_replace($matches, $new_gallery_tag, $value);
 
-        /*dd($value);*/
+        /* dd($value); */
         return $value;
     }
 
@@ -145,7 +143,11 @@ class GalleryShortcodeModifier implements ModifierInterface
     private function createMedia($imgSrc, $title, $context, $createdAt = null)
     {
 
-        $media = new Media();
+        if (!class_exists($this->options['media_class'])) {
+            throw new \Exception(sprintf('GalleryShortcodeModifier media class does not exist (%s)', $this->options['media_class']));
+        }
+        $media = new $this->options['media_class']();
+
 
         $media->setName($title);
         $media->setCreatedAt(isset($createdAt) ? $createdAt : new \DateTime);
@@ -160,13 +162,19 @@ class GalleryShortcodeModifier implements ModifierInterface
     private function createGallery($medias, $title, $context, $default_format)
     {
 
-        $gallery = new Gallery();
+        if (!class_exists($this->options['gallery_class'])) {
+            throw new \Exception(sprintf('GalleryShortcodeModifier media class does not exist (%s)', $this->options['gallery_class']));
+        }
+        $gallery = new $this->options['gallery_class']();
+
+        /* $gallery = new Gallery(); */
         $gallery->setName($title);
         $gallery->setContext($context);
         $gallery->setDefaultFormat($default_format);
         $gallery->setEnabled(true);
         foreach ($medias as $media) {
-            $galleryMedia = new GalleryHasMedia();
+            $galleryMedia = new $this->options['gallery_has_media_class']();
+            /* $galleryMedia = new GalleryHasMedia(); */
             $galleryMedia->setMedia($media);
 
             $gallery->addGalleryHasMedias($galleryMedia);
@@ -217,6 +225,9 @@ class GalleryShortcodeModifier implements ModifierInterface
     {
 
         return $this->options = array_merge(array(
+            'media_class' => '\AppBundle\Entity\Media\Media',
+            'gallery' => '\AppBundle\Entity\Media\Gallery',
+            'gallery_has_media_class' => '\AppBundle\Entity\Media\GalleryHasMedia',
             'base_path' => '',
             'context' => 'default',
             'default_format' => 'abstract',

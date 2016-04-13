@@ -4,7 +4,6 @@ namespace Nz\MigrationBundle\Modifier;
 
 use Sonata\CoreBundle\Model\ManagerInterface;
 use Sonata\ClassificationBundle\Model\CategoryManagerInterface;
-use AppBundle\Entity\Media\Media;
 use Sonata\MediaBundle\Provider\Pool;
 use Symfony\Component\DomCrawler\Crawler;
 
