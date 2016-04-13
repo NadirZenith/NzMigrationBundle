@@ -2,14 +2,22 @@
 {#{% extends 'SonataAdminBundle::standard_layout.html.twig' %}#}
 {% extends base_template %}
 
+{#{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}#}
+{#
+{% block tab_menu %}
+    {{parent()}}
+   
+{% endblock %}
+
+
+#}
 {% block tab_menu %}
     {{ knp_menu_render(admin.sidemenu(action), {
         'currentClass' : 'active',
         'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}
 
 {% endblock %}
-
-
+{#
 {% block actions %}
     <li>
         {% if app.request.get('persist') == true %}
@@ -25,34 +33,19 @@
         {% endif %}
     </li>
 {% endblock %}
+#}
 
 
 {#{% block sonata_admin_content %}#}
 {% block content %}
-    {#
-        {% for label, flashes in app.session.flashbag.all %}
-            {% for flash in flashes %}
-                <div class="alert alert-{{ label }}">
-                    {{ flash }}
-                </div>
-            {% endfor %}
-        {% endfor %}
-    #}
-    {#{{dump(app.session.flashbag)}}#}
-    {% if action == 'home' %}
-        <div id="app">
-            <h2>
-                wp migration home
-            </h2>
-            {{connection.database}} at {{connection.host}}
-            <hr>
+    {% include 'NzMigrationBundle:CRUD:documentation.html.twig' %}
 
-        </div>
 
-    {% endif %}
-    {% if dump is defined %}
-        {{dump(dump)}}
-    {% endif %}
+    {#{% set users_link =  sonata_admin.url('nz.migration.admin', 'users')%}#}
+    {#{{d(users_link)}}#}
+
+    {#{{d(sonata_admin)}}#}
+
 {% endblock %}
 
 

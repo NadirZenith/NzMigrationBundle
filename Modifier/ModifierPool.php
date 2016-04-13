@@ -24,8 +24,8 @@ class ModifierPool implements ModifierPoolInterface
 
     public function getModifier($name)
     {
-      
-        return $this->pool[$name];
+
+        return isset($this->pool[$name]) ? $this->pool[$name] : false;
     }
 
     public function removeModifier($name)

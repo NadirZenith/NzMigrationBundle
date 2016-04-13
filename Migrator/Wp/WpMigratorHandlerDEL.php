@@ -216,11 +216,6 @@ class WpMigratorHandler implements MigratorHandlerInterface
         $this->config = $config;
     }
 
-    protected function getDoctrine()
-    {
-        return $this->doctrine;
-    }
-
     /**
      *  Get entity manager
      * 
@@ -229,11 +224,11 @@ class WpMigratorHandler implements MigratorHandlerInterface
     protected function getEntityManager($class)
     {
 
-        if (!$this->getDoctrine()->getManagerForClass($class)->isOpen()) {
-            $this->getDoctrine()->resetManager();
+        if (!$this->doctrine->getManagerForClass($class)->isOpen()) {
+            $this->doctrine->resetManager();
         }
 
-        $em = $this->getDoctrine()->getManagerForClass($class);
+        $em = $this->doctrine->getManagerForClass($class);
 
         if (!$em) {
             throw new Exception(sprintf('Can\'t find manager for class: %s', $class));

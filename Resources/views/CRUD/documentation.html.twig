@@ -1,0 +1,33 @@
+{% set doc =  "
+## Migration documentation  
+
+### Default Migration  
+@todo Not Wp migration  
+
+[comment]: # (If NzWordpress bundle is enabled)
+### Wp Migration  
+[WpUsers](" ~ sonata_admin.url('nz.migration.admin', 'users') ~ ")
+
+* list users & migrate
+* users meta info
+
+[WpPosts](" ~ sonata_admin.url('nz.migration.admin', 'posts') ~ ")
+
+* list posts & migrate by type(migrates 10 posts not migrated each time)
+* posts info
+
+-----
+
+#### Wp Migration Extension  
+[WpUsers](" ~ sonata_admin.url('nz.wordpress.admin.user', 'list') ~ ")
+
+* users list migrate action button with status
+
+[WpPosts](" ~ sonata_admin.url('nz.wordpress.admin.post', 'list') ~ ")
+
+* posts list migrate action button with status
+
+
+"%} 
+
+{{ doc | format_text('markdown')|raw }}

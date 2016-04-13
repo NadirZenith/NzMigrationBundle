@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    
+    <entity
+        name="Nz\MigrationBundle\Entity\Log"
+        table="nz__migration_log"
+        repository-class="Nz\MigrationBundle\Entity\LogRepository">
+        
+        <unique-constraints>
+            <unique-constraint columns="source_class,source_class_id,target_class,target_class_id" name="migration_log_idx" />
+        </unique-constraints>
+        
+        
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+        
+        <field name="source"       type="string"     column="source_class"      />
+        
+        <field name="sourceId"     type="string"     column="source_class_id"   />
+        
+        <field name="target"       type="string"     column="target_class"      nullable="true" />
+        
+        <field name="targetId"     type="string"     column="target_class_id"   nullable="true" />
+        
+        <field name="error"        type="boolean"    column="has_error"         default="false" />
+        
+        <field name="notes"        type="array"      column="note"              nullable="true" />
+        
+    </entity>
+    
+</doctrine-mapping>

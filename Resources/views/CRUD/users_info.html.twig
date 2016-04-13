@@ -1,69 +1,62 @@
 
-{% extends 'NzMigrationBundle:CRUD:home.html.twig' %}
+{% extends 'NzMigrationBundle:CRUD:list.html.twig' %}
 
 
 {% block sonata_admin_content %}
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12">
-                {% if dump is not empty%}
-                    {{dump(dump)}}
-                {% endif %}
+            <div class="col-lg-12">
+                {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-8">
+
                 <div class="box box-primary" >
                     <div class="box-body table-responsive no-padding">
-                        <h2>Post types: {{types|length}}, system: {{system_types|length}}</h2>
-                        <table class="table table-condensed table-responsive table-striped ">
+
+                        <h2>Users {{users|length}}</h2>
+                        <table class="table table-condensed table-striped">
                             <thead>
                                 <tr> 
                                     <th>#</th>
-                                    <th>Types</th>
-                                    <th>M</th>
+                                    <th>Username</th>
+                                    <th>Slug</th>
+                                    <th>E-mail</th>
+                                    <th>Migrate</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for posttype in types %}
+                                {% for user in users %}
                                     <tr> 
-                                        <th>{{ loop.index }}</th>
-                                        <td>{{ posttype.type }}</td>
-                                        <th><a title="migrate" href="{{admin.generateUrl('post-types', {'type' : posttype.type })}}"><i class="fa fa-object-group"></i></a></th>
-                                    </tr>
-                                    {#{% set lastLoop = loop.index %}#}
-                                {% endfor %}
-                                <tr class="info"> 
-                                    <th>#</th>
-                                    <th>System</th>
-                                </tr>
-                                {% for posttype in system_types %}
-                                    <tr class="danger"> 
-                                        <th>{{ loop.index  }}</th>
-                                        <td>{{ posttype }}</td>
-                                        <td>n/a</td>
+                                        <th>{{user.id}}</th>
+                                        <th>{{user.username}}</th>
+                                        <th>{{user.nicename}}</th>
+                                        <th>{{user.email}}</th>
+                                        <th><a title="migrate" href="{{admin.generateUrl('migrate-users', {'id' : user.id })}}"><i class="fa fa-exchange"></i></a></th>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="box box-primary" >
                     <div class="box-body table-responsive no-padding">
-                        <h2>Metas {{metas|length}}, not like: {{not_like|length}}, not in: {{not_in|length}} </h2>
+                        <h2>Distinct Metas {{metas|length}}, not like: {{not_like|length}}, not in: {{not_in|length}} </h2>
                         <table class="table table-condensed table-responsive table-striped">
                             <thead>
                                 <tr> 
                                     <th>#</th>
-                                    <th>Metas</th>
+                                    <th>keys</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for meta in metas %}
                                     <tr> 
-                                        <th>{{ loop.index }}</th>
-                                        <td>{{ meta.key}}</td>
+                                        <th>{{loop.index}}</th>
+                                        <td>{{meta.key}}</td>
                                     </tr>
                                 {% endfor %}
                                 <tr class="info"> 
@@ -91,9 +84,9 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
+
 
 {% endblock %}
 

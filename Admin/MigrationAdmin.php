@@ -13,20 +13,15 @@ use Sonata\AdminBundle\Route\RouteCollection;
 class MigrationAdmin extends Admin
 {
 
-    protected $baseRoutePattern = 'wp_migration'; //in url
-    protected $baseRouteName = 'wp_migration_admin';
+    protected $baseRoutePattern = 'nz/migration'; //in url
+    protected $baseRouteName = 'admin_nz_migration';
 
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->clear();
-        $collection->add('list', 'list'); //home
-        $collection->add('users', 'users');
-        $collection->add('post-types', 'post-types');
-        /* $collection->add('migrate-post-type', 'migrate-post-type'); */
-        /* $collection->add('test', 'test'); */
+        $collection->add('list', 'list');
         $collection->add('migrate-config', 'migrate-config');
-        /* $collection->add('test-posts', 'test-posts'); */
-        /* $collection->add('test-child', 'test-child'); */
+        /* $collection->add('migrate-users', 'migrate-users'); */
     }
 
     /**
@@ -34,42 +29,24 @@ class MigrationAdmin extends Admin
      */
     protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
-        $home = $menu->addChild('Home', ['uri' => $this->generateUrl('list')]);
+
+        $request = $this->getRequest();
+        $persist = $this->getRequest()->get('persist', false);
+
+        $uri = $this->generateUrl($action, array_merge($request->attributes->get('_route_params'), array('persist' => !$persist)));
+        $style = 'background-color:%s';
+        $menu->addChild($persist ? $this->trans('sidemenu.link_persisting') : $this->trans('sidemenu.link_testing'), [
+            'uri' => $uri,
+            'attributes' => array(
+                'style' => sprintf($style, $persist ? 'orangered' : 'greenyellow')
+            )
+        ]);
+        $menu->addChild('Home', ['uri' => $this->generateUrl('list')]);
+        $menu->addChild('Migrate config', ['uri' => $this->generateUrl('migrate-config')]);
 
         if ($action == 'home') {
-            $home->addChild('Migrate config', ['uri' => $this->generateUrl('migrate-config')]);
-        }
-        $users = $menu->addChild('Users', ['uri' => $this->generateUrl('users')]);
-        
-        if ($action == 'users') {
-            $users->addChild('Metas', ['uri' => $this->generateUrl('users', ['sub' => 'metas'])]);
-            $users->addChild('Migrate', ['uri' => $this->generateUrl('users', ['sub' => 'migrate'])]);
             
         }
-        
-        $poststypes = $menu->addChild('Post Types', ['uri' => $this->generateUrl('post-types')]);
-        
-        if ($action == 'post-types') {
-            /*dd($this->getRouteGenerator()->generate('admin_nz_wordpress_post_list'));*/
-            $poststypes->addChild('View Posts', ['uri' => $this->getRouteGenerator()->generate('admin_nz_wordpress_post_list')]);
-        }
-        /* $menu->addChild('Migrate config', ['uri' => $this->generateUrl('migrate-config')]); */
-
-        if (!$childAdmin && !in_array($action, array('edit'))) {
-            return;
-        }
-
-        $admin = $this->isChild() ? $this->getParent() : $this;
-
-        $id = $admin->getRequest()->get('id');
-
-        $menu->addChild(
-            $this->trans('sidemenu.link_edit_post'), array('uri' => $admin->generateUrl('edit', array('id' => $id)))
-        );
-
-        $menu->addChild(
-            $this->trans('sidemenu.post_metas', array(), 'NzShopBundle'), array('uri' => $admin->generateUrl('nz_wordpress.admin.post_meta.list', array('id' => $id)))
-        );
     }
 
     public function getPersistentParameters()
@@ -77,10 +54,8 @@ class MigrationAdmin extends Admin
         if (!$this->getRequest()) {
             return array();
         }
-        /* dd('ysfd'); */
         return array(
             'persist' => $this->getRequest()->get('persist', false)
-            /* 'context'  => $this->getRequest()->get('context', 'default'), */
         );
     }
 }

@@ -15,7 +15,8 @@
     "require": {
         "symfony/framework-bundle": "~2.3|~3.0",
         "symfony/dom-crawler": "~2.1",
-        "symfony/css-selector": "~2.1"
+        "symfony/css-selector": "~2.1",
+        "league/html-to-markdown": "^4.2"
     },
     "require-dev": {
         "nz/wordpress-bundle": "dev-master",

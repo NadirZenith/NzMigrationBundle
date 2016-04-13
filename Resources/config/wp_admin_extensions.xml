@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="nz.migration.core.admin.extension.class">Nz\MigrationBundle\Admin\CoreAdminExtension</parameter>
+        <parameter key="nz.migration.wp.admin.extension.class">Nz\MigrationBundle\Admin\WpAdminExtension</parameter>
+    </parameters>
+    
+    <services>
+      
+        <!--   show wordpress posts/users info in migration admin     -->
+        <service id="nz.migration.core.admin.extension" class="%nz.migration.core.admin.extension.class%">
+            <tag name="sonata.admin.extension" target="nz.migration.admin" />
+        </service>
+       
+        <!--  show migration links in wordpress post list     -->
+        <service id="nz.migration.wp.admin.extension" class="%nz.migration.wp.admin.extension.class%">
+            <tag name="sonata.admin.extension" target="nz.wordpress.admin.user" />
+            <tag name="sonata.admin.extension" target="nz.wordpress.admin.post" />
+            
+             <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+       
+    </services>
+</container>

@@ -16,13 +16,13 @@ class MigratorsCompilerPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container)
     {
-        if (false === $container->hasDefinition('nz.wp.migration.pool')) {
+        if (false === $container->hasDefinition('nz.migrator.pool')) {
             return;
         }
 
-        $definition = $container->getDefinition('nz.wp.migration.pool');
+        $definition = $container->getDefinition('nz.migrator.pool');
 
-        foreach ($container->findTaggedServiceIds('nz.wp.migrator') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds('nz.migrator') as $id => $attributes) {
             $definition->addMethodCall('addMigrator', array(new Reference($id)));
         }
     }

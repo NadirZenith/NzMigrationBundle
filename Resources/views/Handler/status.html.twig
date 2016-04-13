@@ -1,0 +1,21 @@
+{#{{d(handler)}}#}
+{% import 'NzMigrationBundle:CRUD:parts.html.twig' as bs %}
+
+<h3>Sources ( {{ handler.sources |length}} )</h3>
+<div class="panel-group" id="sources" role="tablist" aria-multiselectable="true">
+    {% for object in handler.sources %}
+        {{bs.accordion('sources',object, object.content, loop)}}
+    {% endfor  %}
+</div>
+<h3>Targets ( {{ handler.targets |length}} )</h3>
+<div class="panel-group" id="targets" role="tablist" aria-multiselectable="true">
+    {% for target in handler.targets %}
+        {{bs.accordion('targets',target, target.content, loop)}}
+    {% endfor  %}
+</div>
+<h3>Errors ( {{ handler.errors |length}} )</h3>
+<div class="panel-group" id="errors" role="tablist" aria-multiselectable="true">
+    {% for error in handler.errors %}
+        {{bs.accordion('errors',error.message,error, loop)}}
+    {% endfor  %}
+</div>

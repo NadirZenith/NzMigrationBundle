@@ -6,7 +6,7 @@
 
     <services>
         
-        <service id="nz_migration.admin" class="Nz\MigrationBundle\Admin\MigrationAdmin">
+        <service id="nz.migration.admin" class="Nz\MigrationBundle\Admin\MigrationAdmin">
             <tag name="sonata.admin" manager_type="orm" group="nz_wp_migration" label="migration_app"  label_catalogue="%nz.shop.admin.shop.translation_domain%" label_translator_strategy="sonata.admin.label.strategy.underscore" />
 
             <argument />
@@ -15,22 +15,43 @@
           
             <call method="setTemplate">
                 <argument>list</argument>
-                <argument>NzMigrationBundle:CRUD:home.html.twig</argument>
+                <argument>NzMigrationBundle:CRUD:list.html.twig</argument>
             </call>
+            <!--            
             <call method="setTemplate">
                 <argument>users</argument>
                 <argument>NzMigrationBundle:CRUD:users.html.twig</argument>
             </call>
+            -->
             <call method="setTemplate">
-                <argument>users_metas</argument>
-                <argument>NzMigrationBundle:CRUD:users_metas.html.twig</argument>
+                <argument>users-info</argument>
+                <argument>NzMigrationBundle:CRUD:users_info.html.twig</argument>
             </call>
+            <!--            
             <call method="setTemplate">
-                <argument>post_types</argument>
-                <argument>NzMigrationBundle:CRUD:post_types.html.twig</argument>
+                <argument>posts</argument>
+                <argument>NzMigrationBundle:CRUD:posts.html.twig</argument>
+            </call>
+            -->
+            <call method="setTemplate">
+                <argument>posts-info</argument>
+                <argument>NzMigrationBundle:CRUD:posts_info.html.twig</argument>
 
             </call>
             
+        </service>
+        <service id="nz.migration.admin.log" class="Nz\MigrationBundle\Admin\LogAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="nz_wp_migration" label="migration_logs"  label_catalogue="%nz.shop.admin.shop.translation_domain%" label_translator_strategy="sonata.admin.label.strategy.underscore" />
+
+            <argument />
+            <argument>Nz\MigrationBundle\Entity\Log</argument>
+            <argument>NzMigrationBundle:Crud/LogAdmin</argument>
+            
+            <call method="setTemplate">
+                <argument>diff</argument>
+                <argument>NzMigrationBundle:CRUD:diff.html.twig</argument>
+            </call>
+
         </service>
         
     </services>

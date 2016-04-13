@@ -2,6 +2,7 @@
 
 namespace Nz\MigrationBundle\Tests\Migrator;
 
+use Nz\MigrationBundle\Tests\fixtures\TargetEntity;
 /**
  *
  * @author tino
@@ -11,12 +12,15 @@ class BaseMigratorTest extends \PHPUnit_Framework_TestCase
 
     public function testGeneralClass()
     {
-/*        
-        $baseMigrator = $this->getMockBuilder('Nz\MigrationBundle\Migrator\BaseMigrator')
-            ->setConstructorArgs(array('Nz\MigrationBundle\Tests\fixtures\EntityTest\EntityTest'))
+        $migrator = $this->getMockBuilder('Nz\MigrationBundle\Migrator\BaseMigrator')
+            /*->setConstructorArgs(array(TargetEntity::class))*/
+            ->setMethods(array('isSrcMigrator', 'migrate'))
             ->getMock();
-
-        $this->assertEquals($baseMigrator->getClass(), 'Nz\MigrationBundle\Tests\fixtures\EntityTest\EntityTest');
- */
+        
+        /*$this->assertEquals(TargetEntity::class, $migrator->getClass());*/
+        
+        /*$migrator->setUpTarget();*/
+        
+        /*$this->assertEquals(new TargetEntity(), $migrator->getTarget());*/
     }
 }

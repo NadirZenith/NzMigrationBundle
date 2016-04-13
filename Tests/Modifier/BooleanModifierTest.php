@@ -2,6 +2,8 @@
 
 namespace Nz\MigrationBundle\Tests\Modifier;
 
+use Nz\MigrationBundle\Modifier\BooleanModifier;
+
 /**
  * Description of StringModifier
  *
@@ -13,7 +15,7 @@ class BooleanModifierTest extends \PHPUnit_Framework_TestCase
     protected function getModifier()
     {
 
-        $modifier = $this->getMockBuilder('Nz\MigrationBundle\Modifier\BooleanModifier')
+        $modifier = $this->getMockBuilder(BooleanModifier::class)
             ->setMethods(null)
             ->getMock();
 

@@ -1,0 +1,147 @@
+
+{% extends base_template %}
+
+{% block tab_menu %}
+    {{ knp_menu_render(admin.sidemenu(action), {
+        'currentClass' : 'active',
+        'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}
+
+{% endblock %}
+
+
+{#{% block sonata_admin_content %}#}
+{% block content %}
+    <style>
+        pre {
+            overflow: auto;
+            word-wrap: normal;
+            white-space: normal;
+        }
+    </style>
+    {#
+        <pre>
+            <div id="a">{{source.content|e('html')}}</div>
+            <hr>
+            <div id="display"></div>
+            <hr>
+            <div id="b">{{target.rawContent|e('html')}}</div>
+        </pre>
+    #}
+    <div class="panel panel-default">
+        <div class="panel-heading">Raw</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    source
+                    <pre id="raw-a">
+                        {#{{source.content|e('html')}}#}
+                        {{source.content|raw}}
+                    </pre>
+                </div>
+
+                <div class="col-md-4">
+                    target
+                    <pre id="raw-b">
+                        {{target.rawContent|raw}}
+                    </pre>
+                </div>
+
+                <div class="col-md-4">
+                    diff
+                    <pre id="raw-diff"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Escaped</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    source
+                    <pre id="html-a">
+                        {{source.content|e('html')}}
+                    </pre>
+                </div>
+
+                <div class="col-md-6">
+                    target
+                    <pre id="html-b">
+                        {{target.rawContent|e('html')}}
+                    </pre>
+                </div>
+                <div class="col-md-12">
+                    diff
+                    <pre id="html-diff"></pre>
+                </div>
+            </div>
+            <pre>
+            </pre>
+            <pre>
+            </pre>
+        </div>
+    </div>
+
+    {#{{d(source.content)}}#}
+    {#{{d(target.rawContent)}}#}
+
+    <script src="../dist/diff.js"></script>
+    <script>
+        {#var a = '{{source.content|e('js')}}';#}
+        {#var b = '{{target.rawContent|e('js')}}';#}
+
+            //raw
+            var rawa = document.getElementById('raw-a');
+            var rawb = document.getElementById('raw-b');
+            var rawdiff = document.getElementById('raw-diff');
+
+            console.log(rawa.innerHTML);
+        {#var a = rawa.innerHTML#}
+        {#var b = rawb.innerHTML#}
+            var a = rawa.textContent
+            var b = rawb.textContent
+
+            var raw = JsDiff.diffWords(a, b);
+            /*var diff = JsDiff.diffChars(a, b);*/
+
+            raw.forEach(function (part) {
+                // green for additions, red for deletions
+                // grey for common parts
+                var color = part.added ? 'green' :
+                        part.removed ? 'red' : 'grey';
+                var span = document.createElement('span');
+                span.style.color = color;
+                span.appendChild(document
+                        .createTextNode(part.value));
+                rawdiff.appendChild(span);
+            });
+
+            //html
+            var htmla = document.getElementById('html-a');
+            var htmlb = document.getElementById('html-b');
+            var htmldiff = document.getElementById('html-diff');
+
+            var a = htmla.textContent
+            var b = htmlb.textContent
+
+            var html = JsDiff.diffWords(a, b);
+            /*var diff = JsDiff.diffChars(a, b);*/
+
+            html.forEach(function (part) {
+                console.log(part);
+                // green for additions, red for deletions
+                // grey for common parts
+                var color = part.added ? 'green' :
+                        part.removed ? 'red' : 'grey';
+                var span = document.createElement('span');
+                span.style.color = color;
+                span.appendChild(document
+                        .createTextNode(part.value));
+                htmldiff.appendChild(span);
+            });
+    </script>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,21 @@
+
+{% set log = migration_status(object) %}
+
+{#{{dump(log)}}#}
+{% if log is not empty %}
+    {% set log = log|split(':') %}
+    {{log.2}}<br>
+    {% if log.3 == 0%}
+        <span style="background-color: red;">{{log.3}}</span>
+    {% else%}
+        {{log.3}}
+    {% endif%}
+{% else %}
+    {% if 'nz.wordpress.admin.user' == admin.code %}
+        <a class="btn-sm" href="{{ admin.routeGenerator.generate('admin_nz_migration_migrate-users', {id : object.id, persist: true}) }}" title="migrate"><i class="fa fa-exchange"></i></a>
+        {% else %}
+        <a class="btn-sm" href="{{ admin.routeGenerator.generate('admin_nz_migration_migrate-posts', {id : object.id, persist: true}) }}" title="migrate"><i class="fa fa-exchange"></i></a>
+    {% endif %}
+{% endif %}
+{#{{ migration_status(object) }}#}
+{#{{ object | migration_status('migrated', '') }}#}

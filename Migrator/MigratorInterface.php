@@ -11,36 +11,26 @@ use Nz\MigrationBundle\Modifier\ModifierPoolInterface;
 interface MigratorInterface
 {
 
-    public function __construct($class);
+    /**
+     * Get entity class name
+     *
+     * @return string
+     */
+    /*public function getClass();*/
 
     /**
      * Set up target
      *
      * @return void
      */
-    public function setUpTarget();
+    /*public function setUpTarget();*/
 
     /**
      * Get migrated entity
      *
      * @return object
      */
-    public function getTarget();
-
-    /**
-     * Migrate Src
-     *
-     * @return object
-     */
-    public function migrateSrc($src);
-
-    /**
-     * Get entity class name
-     *
-     * @return string
-     */
-    public function getClass();
-
+    /*public function getTarget();*/
 
     /**
      * Is migrator compatible with object.
@@ -50,9 +40,9 @@ interface MigratorInterface
     public function isSrcMigrator($src);
 
     /**
-     * Set Pool of Modifiers.
+     * Migrate Src
      *
-     * @return void
+     * @return object
      */
-    public function setModifierPool(ModifierPoolInterface $modifierPool);
+    public function migrate($src);
 }

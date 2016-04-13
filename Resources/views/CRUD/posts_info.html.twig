@@ -1,0 +1,128 @@
+
+{% extends 'NzMigrationBundle:CRUD:list.html.twig' %}
+
+
+{% block sonata_admin_content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                {% if handler is not empty %}
+                    {% include 'NzMigrationBundle:Handler:status.html.twig' %}
+                {% endif %}
+            </div>
+            <div class="col-lg-6">
+                <div class="box box-primary" >
+                    <div class="box-body table-responsive no-padding">
+                        <h2>Post types:{{ types|length + excluded_types|length}} migrate:{{types|length}}, excluded: {{excluded_types|length}}</h2>
+                        <table class="table table-condensed table-responsive table-striped ">
+                            <thead>
+                                <tr> 
+                                    <th>#</th>
+                                    <th>Migrate</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for posttype in types %}
+                                    <tr> 
+                                        <th>{{ loop.index }}</th>
+                                        <td>{{ posttype.type }}</td>
+                                        <th><a title="migrate" href="{{admin.generateUrl('migrate-type', {'type' : posttype.type })}}"><i class="fa fa-object-group"></i></a></th>
+                                    </tr>
+                                    {#{% set lastLoop = loop.index %}#}
+                                {% endfor %}
+                                <tr class="info"> 
+                                    <th>#</th>
+                                    <th>Excluded</th>
+                                </tr>
+                                {% for posttype in excluded_types %}
+                                    <tr class="danger"> 
+                                        <th>{{ loop.index  }}</th>
+                                        <td>{{ posttype }}</td>
+                                        <td>n/a</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="box box-primary" >
+                    <div class="box-body table-responsive no-padding">
+                        <h2>Metas {{metas|length}}, not like: {{not_like|length}}, not in: {{not_in|length}} </h2>
+                        <table class="table table-condensed table-responsive table-striped">
+                            <thead>
+                                <tr> 
+                                    <th>#</th>
+                                    <th>Metas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for meta in metas %}
+                                    <tr> 
+                                        <th>{{ loop.index }}</th>
+                                        <td>{{ meta.key}}</td>
+                                    </tr>
+                                {% endfor %}
+                                <tr class="info"> 
+                                    <th>#</th>
+                                    <th>Not Like</th>
+                                </tr>
+                                {% for meta in not_like %}
+                                    <tr class="warning"> 
+                                        <th>{{ loop.index  }}</th>
+                                        <td>{{ meta }}</td>
+                                    </tr>
+                                {% endfor %}
+                                <tr class="info"> 
+                                    <th>#</th>
+                                    <th>Not In</th>
+                                </tr>
+                                {% for meta in not_in %}
+                                    <tr class="danger"> 
+                                        <th>{{ loop.index  }}</th>
+                                        <td>{{ meta }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="box box-primary" >
+                    <div class="box-body table-responsive no-padding">
+
+                        <h2>Posts {{posts|length}}</h2>
+                        <table class="table table-condensed table-striped">
+                            <thead>
+                                <tr> 
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Type</th>
+                                    <th>Migrate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for post in posts %}
+                                    <tr> 
+                                        <th>{{post.id}}</th>
+                                        <th>{{post.title}}</th>
+                                        <th>{{post.type}}</th>
+                                        <th><a title="migrate" href="{{admin.generateUrl('migrate-posts', {'id' : post.id })}}"><i class="fa fa-exchange"></i></a></th>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+

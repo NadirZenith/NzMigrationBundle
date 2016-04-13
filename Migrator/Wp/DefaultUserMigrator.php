@@ -13,42 +13,22 @@ use Nz\MigrationBundle\Model\Traits\MetaTrait;
 class DefaultUserMigrator extends BaseUserMigrator
 {
 
-    public function migrateSrc($src)
+    public function setUpTarget()
     {
-
-        foreach ($this->config['fields'] as $setter => $config) {
-
-            $getter = sprintf('get%s', ucfirst($config[0]));
-            if (is_callable(array($src, $getter))) {
-                $value = $src->$getter();
-            }
-
-            $setter = sprintf('set%s', ucfirst($setter));
-            if (is_callable(array($this->target, $setter))) {
-                $final_value = $this->modifyValue($value, $config[1], $config[2]);
-
-                if (!is_null($final_value)) {
-
-                    $this->target->$setter($final_value);
-                }
-            }
+        if (!class_exists($this->config['target_entity'])) {
+            throw new \Exception(sprintf('Target class "%s" does not exist', $this->config['target_entity']));
         }
+
+        $this->target = new $this->config['target_entity'];
     }
 
-    /**
-     * Migrate wp post metas
-     */
-    public function migrateMetas(array $metas = array())
+    public function migrate($src)
     {
+        $this->setUpTarget();
+        $this->migrateFields($src, $this->config['fields']);
+        $this->migrateMetas($src, $this->config['metas']);
+        $this->migrateExtras($src, $this->config['extra']);
 
-        $fieldsConfig = $this->config['metas'];
-
-        $this->migrateMetasConfig($metas, $fieldsConfig);
-
-        if (in_array(MetaTrait::class, class_uses($this->target))) {
-
-            $fields = $this->config['extra'];
-            $this->migrateExtrasConfig($metas, $fields);
-        }
+        return $this->target;
     }
 }

@@ -14,25 +14,27 @@ class StackModifier implements ModifierInterface
 
     public function setPool(ModifierPoolInterface $pool)
     {
-        /* $pool->removeModifier('stack'); */
         $this->pool = $pool;
     }
 
     public function modifyStack($value, $modifier, $options)
     {
+         $mod = $this->pool->getModifier($modifier);
 
-        return $this->pool->getModifier($modifier)->modify($value, $options);
+        if (!$mod) {
+            throw new \Exception(sprintf('Modifier "%s" does not exist', $modifier));
+        }
+
+        return $mod->modify($value, $options);
+        
+        /*return $this->pool->getModifier($modifier)->modify($value, $options);*/
     }
 
     public function modify($value, array $options = array())
     {
-        /* print_r($value, TRUE); */
         foreach ($options as $K => $stack) {
-
-            $modifier = $stack[0];
-            $opt = isset($stack[1]) ? $stack[1] : [];
-            /* $mod = $this->pool->getModifier($modifier); */
-            /* $value = $mod->modify($value, $opt); */
+            $modifier = $stack[1];
+            $opt = isset($stack[2]) ? $stack[2] : [];
 
             $value = $this->modifyStack($value, $modifier, $opt);
         }

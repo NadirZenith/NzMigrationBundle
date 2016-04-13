@@ -18,12 +18,14 @@ use Nz\MigrationBundle\Modifier\StringModifier;
 class DefaultUserMigratorTest extends \PHPUnit_Framework_TestCase
 {
 
+    use TestTrait;
+
     private function getTestUser()
     {
 
         $user = new User();
         $user->setUsername('Nadir');
-        
+
         $meta = new UserMeta();
         $meta->setKey('meta-key');
         $meta->setValue('Meta Value');
@@ -44,37 +46,32 @@ class DefaultUserMigratorTest extends \PHPUnit_Framework_TestCase
         /* $postMigrator = $this->get */
         // Create a stub for the SomeClass class.
         $migrator = $this->getMockBuilder(DefaultUserMigrator::class)
-            ->setConstructorArgs([TargetEntity::class])
+            /* ->setConstructorArgs([TargetEntity::class]) */
             ->setMethods(null)
             ->getMock();
 
         $migrator->setModifierPool($modifierPool);
 
 
-        $config = $this->getConfig();
+        $config = $this->getUserConfig();
         $migrator->setConfig($config);
-     
+
         $src = $this->getTestUser();
 
         $this->assertEquals($migrator->isSrcMigrator($src), true);
 
         $migrator->setUpTarget();
-        $migrator->migrateSrc($src);
-
-        $migrator->migrateMetas($src->getMetas()->toArray());
+        $migrator->migrate($src);
 
         $target = $migrator->getTarget();
 
-
         $this->assertEquals($src->getUsername(), $target->getName());
-        $this->assertEquals('Meta Value', $target->getMetaKey());
+        $this->assertEquals('Meta Value', $target->getTitle());
         $this->assertEquals('Meta Value 2', $target->getMeta('key'));
     }
 
-    private function getConfig()
+    private function getUserConfig()
     {
-        $yaml = new Parser();
-        $config = $yaml->parse(file_get_contents(__DIR__ . '/../../fixtures/config.yml'));
-        return $config['nz_migration']['user'];
+        return $this->getConfig()['wp']['user'];
     }
 }

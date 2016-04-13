@@ -12,11 +12,8 @@ class StringModifier implements ModifierInterface
 
     public function modify($value, array $options = array())
     {
-        if (empty($value)) {
-            if (isset($options['string'])) {
-                return $options['string'];
-            }
-            return null;
+        if (empty($value) && isset($options['string'])) {
+            return $options['string'];
         }
 
         return $value;

@@ -1,0 +1,17 @@
+
+{% macro accordion(id,title, content, loop) %}
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-{{id}}-{{loop.index}}">
+            <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#{{id}}" href="#collapse-{{id}}-{{loop.index}}" aria-expanded="false" aria-controls="collapse-{{id}}-{{loop.index}}">
+                    {{title}}
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-{{id}}-{{loop.index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{id}}-{{loop.index}}">
+            <div class="panel-body">
+                {{content}}
+            </div>
+        </div>
+    </div>
+{% endmacro %}

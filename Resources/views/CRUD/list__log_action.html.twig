@@ -1,0 +1,7 @@
+{% if object.error is empty %}
+    <a title="Show" class="btn btn-sm btn-default diff_link" href="{{admin.generateUrl('diff' , {id: object.id})}}">
+        <i class="fa fa-adjust"></i>
+        Diff
+    </a>
+{% endif %}
+{#{{d(object)}}#}

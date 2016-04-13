@@ -8,13 +8,23 @@
         <parameter key="nz.modifier.pool.class">Nz\MigrationBundle\Modifier\ModifierPool</parameter>
 
         <parameter key="nz.modifier.string.class">Nz\MigrationBundle\Modifier\StringModifier</parameter>
+        <parameter key="nz.modifier.formatter.class">Nz\MigrationBundle\Modifier\FormatterModifier</parameter>
         <parameter key="nz.modifier.boolean.class">Nz\MigrationBundle\Modifier\BooleanModifier</parameter>
+        <parameter key="nz.modifier.html_to_markdown.class">Nz\MigrationBundle\Modifier\HtmlToMarkdownModifier</parameter>
         <parameter key="nz.modifier.datetime.class">Nz\MigrationBundle\Modifier\DatetimeModifier</parameter>
         <parameter key="nz.modifier.thumbnail.class">Nz\MigrationBundle\Modifier\ThumbnailModifier</parameter>
+        <parameter key="nz.modifier.img_tag.class">Nz\MigrationBundle\Modifier\ImgTagModifier</parameter>
+        <parameter key="nz.modifier.log_target_id.class">Nz\MigrationBundle\Modifier\LogTargetIdModifier</parameter>
+        <parameter key="nz.modifier.gallery_shortcode.class">Nz\MigrationBundle\Modifier\GalleryShortcodeModifier</parameter>
+        <parameter key="nz.modifier.taxonomy.class">Nz\MigrationBundle\Modifier\TaxonomyModifier</parameter>
         <parameter key="nz.modifier.wpid.class">Nz\MigrationBundle\Modifier\WpIdModifier</parameter>
         <parameter key="nz.modifier.value.class">Nz\MigrationBundle\Modifier\ValueModifier</parameter>
         <parameter key="nz.modifier.meta.class">Nz\MigrationBundle\Modifier\MetaModifier</parameter>
         <parameter key="nz.modifier.stack.class">Nz\MigrationBundle\Modifier\StackModifier</parameter>
+        <parameter key="nz.modifier.strip_tags.class">Nz\MigrationBundle\Modifier\StripTagsModifier</parameter>
+        <parameter key="nz.modifier.preg_replace.class">Nz\MigrationBundle\Modifier\PregReplaceModifier</parameter>
+        <parameter key="nz.modifier.strip_attributes.class">Nz\MigrationBundle\Modifier\StripAttributesModifier</parameter>
+        <parameter key="nz.modifier.embed.class">Nz\MigrationBundle\Modifier\EmbedModifier</parameter>
     </parameters>
     
     <services>
@@ -24,7 +34,7 @@
         <service id="nz.modifier.stack"  class="%nz.modifier.stack.class%" public="false">
             <tag name="nz.modifier" type="stack" />
             
-            <call method="addPool">
+            <call method="setPool">
                 <argument type="service" id="nz.modifier.pool" />
             </call>
         </service>
@@ -33,13 +43,26 @@
             <tag name="nz.modifier" type="string" />
         </service>
         
+        <service id="nz.modifier.formatter"  class="%nz.modifier.formatter.class%" public="false">
+            <tag name="nz.modifier" type="formatter" />
+            
+            <call method="setFormatter">
+                <argument type="service" id="sonata.formatter.pool" />
+            </call>
+        </service>
+        
         <service id="nz.modifier.boolean"  class="%nz.modifier.boolean.class%" public="false">
             <tag name="nz.modifier" type="boolean" />
+        </service>
+        
+        <service id="nz.modifier.html_to_markdown"  class="%nz.modifier.html_to_markdown.class%" public="false">
+            <tag name="nz.modifier" type="html_to_markdown" />
         </service>
         
         <service id="nz.modifier.datetime"  class="%nz.modifier.datetime.class%" public="false">
             <tag name="nz.modifier" type="datetime" />
         </service>
+        
         <service id="nz.modifier.meta"  class="%nz.modifier.meta.class%" public="false">
             <tag name="nz.modifier" type="meta" />
             
@@ -53,6 +76,38 @@
             <argument type="service" id="sonata.media.manager.media" />
         </service>
         
+        <service id="nz.modifier.img_tag"  class="%nz.modifier.img_tag.class%" public="false">
+            <tag name="nz.modifier" type="img_tag" />
+            
+            <!--<argument type="service" id="sonata.media.pool" />-->
+            <argument type="service" id="sonata.media.manager.media" />
+            <argument type="service" id="sonata.classification.manager.category" />
+        </service>
+        
+        <service id="nz.modifier.log_target_id"  class="%nz.modifier.log_target_id.class%" public="false">
+            <tag name="nz.modifier" type="log_target_id" />
+            
+            <argument type="service" id="doctrine" />
+        </service>
+        
+        <service id="nz.modifier.gallery_shortcode"  class="%nz.modifier.gallery_shortcode.class%" public="false">
+            <tag name="nz.modifier" type="gallery_shortcode" />
+            
+            <argument type="service" id="doctrine" />
+            <argument type="service" id="sonata.classification.manager.category" />
+            <argument type="service" id="sonata.media.manager.gallery" />
+            
+            <call method="setRequest">
+                <argument type="service" id="request_stack" />
+            </call>
+        </service>
+        
+        <service id="nz.modifier.taxonomy"  class="%nz.modifier.taxonomy.class%" public="false">
+            <tag name="nz.modifier" type="taxonomy" />
+            
+            <argument type="service" id="doctrine" />
+        </service>
+        
         <service id="nz.modifier.wpid"  class="%nz.modifier.wpid.class%" public="false">
             <tag name="nz.modifier" type="wpid" />
             
@@ -63,6 +118,22 @@
             <tag name="nz.modifier" type="value" />
             
             <argument type="service" id="sonata.user.manager.user" />
+        </service>
+        
+        <service id="nz.modifier.strip_tags"  class="%nz.modifier.strip_tags.class%" public="false">
+            <tag name="nz.modifier" type="strip_tags" />
+        </service>
+
+        <service id="nz.modifier.preg_replace"  class="%nz.modifier.preg_replace.class%" public="false">
+            <tag name="nz.modifier" type="preg_replace" />
+        </service>
+        
+        <service id="nz.modifier.strip_attributes"  class="%nz.modifier.strip_attributes.class%" public="false">
+            <tag name="nz.modifier" type="strip_attributes" />
+        </service>
+        
+        <service id="nz.modifier.embed"  class="%nz.modifier.embed.class%" public="false">
+            <tag name="nz.modifier" type="embed" />
         </service>
         
     </services>

@@ -2,8 +2,7 @@
 
 namespace Nz\MigrationBundle\Migrator\Wp;
 
-use Nz\WordpressBundle\Entity\Post;
-use Nz\MigrationBundle\Model\Traits\MetaTrait;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Description of DefaultPostMigrator
@@ -13,70 +12,40 @@ use Nz\MigrationBundle\Model\Traits\MetaTrait;
 class DefaultPostMigrator extends BasePostMigrator
 {
 
-    protected $config = array();
-    protected $post = null;
-
     public function isSrcMigrator($src)
     {
-
-        if (!$src instanceof Post) {
-            return false;
-        }
-
-        if (!in_array($src->getType(), array_keys($this->config))) {
-            return false;
+        if (
+            !parent::isSrcMigrator($src) ||
+            !in_array($src->getType(), array_keys($this->config)) ||
+            'publish' !== $src->getStatus()
+        ) {
+            throw new \Exception(sprintf('Not migrator for source class: %s (type %s, status %s)', get_class($src), $src->getType(), $src->getStatus()));
         }
 
         $this->src = $src;
-
         return true;
     }
 
     public function setUpTarget()
     {
-        $this->target = new $this->config[$this->src->getType()]['target_entity']();
+        if (!class_exists($this->config[$this->src->getType()]['target_entity'])) {
+            throw new \Exception(sprintf('Target class "%s" does not exist', $this->config[$this->src->getType()]['target_entity']));
+        }
+
+        $this->target = new $this->config[$this->src->getType()]['target_entity'];
     }
 
     /**
      * Migrate src
      */
-    public function migrateSrc($src)
+    public function migrate($src)
     {
-        $fields = $this->config[$this->src->getType()]['fields'];
-        foreach ($fields as $setter => $config) {
+        $this->setUpTarget();
 
-            $getter = sprintf('get%s', ucfirst($config[0]));
-            if (is_callable(array($src, $getter))) {
-                $value = $src->$getter();
-            }
+        $this->migrateFields($src, $this->config[$this->src->getType()]['fields']);
+        $this->migrateMetas($src, $this->config[$this->src->getType()]['metas']);
+        $this->migrateExtras($src, $this->config[$this->src->getType()]['extra']);
 
-            $setter = sprintf('set%s', ucfirst($setter));
-            if (is_callable(array($this->target, $setter))) {
-                $final_value = $this->modifyValue($value, $config[1], $config[2]);
-
-                if (!is_null($final_value)) {
-
-                    $this->target->$setter($final_value);
-                }
-            }
-        }
-        ;
-    }
-
-    /**
-     * Migrate wp post metas
-     */
-    public function migrateMetas(array $metas = array())
-    {
-
-        $fieldsConfig = $this->config[$this->src->getType()]['metas'];
-
-        $this->migrateMetasConfig($metas, $fieldsConfig);
-
-        if (in_array(MetaTrait::class, class_uses($this->target))) {
-
-            $fields = $this->config[$this->src->getType()]['extra'];
-            $this->migrateExtrasConfig($metas, $fields);
-        }
+        return $this->target;
     }
 }

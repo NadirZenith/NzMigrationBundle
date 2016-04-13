@@ -34,36 +34,56 @@ class NzMigrationExtension extends Extension
         if (isset($bundles['SonataAdminBundle'])) {
             $loader->load('admin.xml');
         }
-
-        $loader->load('migrators.xml');
         $loader->load('modifiers.xml');
+        $loader->load('event_listeners.xml');
+        $loader->load('orm.xml');
+        $loader->load('twig.xml');
 
-        $this->configureDefaultMigrators($config, $container);
+
+        //handler
+        $handler_id = 'nz.migration.handler.default';
+        $definition = $container->getDefinition($handler_id);
+        $definition->addMethodCall('setConfig', array($config));
+        $container->setDefinition($handler_id, $definition);
+
+        //migrator default 
+        $migrator_id = 'nz.migration.default';
+        $definition = $container->getDefinition($migrator_id);
+        $definition->addMethodCall('setConfig', array($config['default']['migrations']));
+        $container->setDefinition($migrator_id, $definition);
+
+        if (isset($bundles['NzWordpressBundle']) && isset($config['wp'])) {
+
+            $loader->load('wp_migrators.xml');
+            $loader->load('wp_admin_extensions.xml');
+            $this->configureWPMigrators($config['wp'], $container);
+        }
     }
 
-    protected function configureDefaultMigrators($config, ContainerBuilder $container)
+    protected function configureWPMigrators($config, ContainerBuilder $container)
     {
-        if ($config['wp']) {
-            $config = $config['wp'];
 
-            //handler
-            $handler_id = 'nz.migration.handler.wp';
-            $definition = $container->getDefinition($handler_id);
-            $definition->addMethodCall('setConfig', [$config]);
-            $container->setDefinition($handler_id, $definition);
+        $container->setParameter('nz.migration.wp.entity_manager', sprintf('doctrine.orm.%s_entity_manager', $config['entity_manager']));
+        $container->setParameter('nz.migration.wp.excluded_types', $config['excluded_types']);
+        //handler
+        /*
+        $handler_id = 'nz.migration.wp';
+        $definition = $container->getDefinition($handler_id);
+        $definition->addMethodCall('setConfig', [$config]);
+        $container->setDefinition($handler_id, $definition);
+         */
 
-            //user
-            $user_migrator_id = $config['user']['service_id'];
-            $definition = $container->getDefinition($user_migrator_id);
-            $definition->replaceArgument(0, $config['user']['target_entity']);
-            $definition->addMethodCall('setConfig', [$config['user']]);
-            $container->setDefinition($user_migrator_id, $definition);
+        //user
+        $user_migrator_id = $config['user']['service_id'];
+        $definition = $container->getDefinition($user_migrator_id);
+        /*$definition->replaceArgument(0, $config['user']['target_entity']);*/
+        $definition->addMethodCall('setConfig', [$config['user']]);
+        $container->setDefinition($user_migrator_id, $definition);
 
-            //posts
-            $post_migrator_id = 'nz.migration.wp.post_default';
-            $definition = $container->getDefinition($post_migrator_id);
-            $definition->addMethodCall('setConfig', [$config['posts']]);
-            $container->setDefinition($post_migrator_id, $definition);
-        }
+        //posts
+        $post_migrator_id = 'nz.migration.wp.post_default';
+        $definition = $container->getDefinition($post_migrator_id);
+        $definition->addMethodCall('setConfig', [$config['posts']]);
+        $container->setDefinition($post_migrator_id, $definition);
     }
 }
