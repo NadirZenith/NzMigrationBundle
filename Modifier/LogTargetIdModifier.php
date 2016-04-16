@@ -29,6 +29,11 @@ class LogTargetIdModifier implements ModifierInterface
         ;
 
         if (!$log) {
+
+            if (isset($options['required']) && $options['required']) {
+                throw new \Exception(sprintf('LogTargetIdModifier Target with value: %s not found', $value));
+            }
+
             return null;
         }
 

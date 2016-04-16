@@ -9,7 +9,7 @@ use League\HTMLToMarkdown\HtmlConverter;
  *
  * @author tino
  */
-class HtmlToMarkdownModifier implements ModifierInterface
+class HtmlToMarkdownModifier extends BaseCrawlerModifier
 {
 
     public function modify($value, array $options = array())
@@ -19,22 +19,23 @@ class HtmlToMarkdownModifier implements ModifierInterface
             "", "\n"
         ];
 
-        /*d($value);*/
+        /* d($value); */
         //p open tag
-        $newcontent = preg_replace("/<p[^>]*?>/", $replace[0], $value);
+        /* $newcontent = preg_replace("/<p[^>]*?>/", $replace[0], $value); */
 
-        /*d($value);*/
+        /* d($value); */
         /* str_replace('</p>', '<br />', $value); */
         //p close tag
-        $value = str_replace("</p>", $replace[1], $newcontent);
+        /* $value = str_replace("</p>", $replace[1], $newcontent); */
 
+        $value = $this->fixMarkdownTags($value, 'init');
 
-
-        /* $converter = new HtmlConverter(); */
+        $converter = new HtmlConverter();
         /* $html = "<h3>Quick, to the Batpoles!</h3>"; */
-        /* $value = $converter->convert($value); */
+        $value = $converter->convert($value);
 
-        /*dd($value);*/
+        $value = $this->fixMarkdownTags($value, 'end');
+        /* dd($value); */
         return $value;
     }
 }

@@ -31,26 +31,21 @@ class BooleanModifier implements ModifierInterface
 
     public function modify($value, array $options = array())
     {
-        /* d($value); */
         if (is_bool($value) || is_int($value)) {
 
-            return (bool) $value;
-        }
+            $value = (bool) $value;
+        } else
         if (in_array($value, self::$enabled_strings)) {
-            return true;
-        }
-
+            $value = true;
+        } else
         if (in_array($value, self::$disabled_strings)) {
-            return false;
-        }
-        if (isset($options['default'])) {
-            return (bool) $options['default'];
-        }
-        /*
-         */
-        /*
-         */
+            $value = false;
+        } else
 
-        throw new \RuntimeException(sprintf('It was not possible to modify the value %s', $value));
+        if (isset($options['default'])) {
+            $value = (bool) $options['default'];
+        }
+
+        return $value;
     }
 }

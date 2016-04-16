@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Sonata\ClassificationBundle\Entity\CategoryManager;
 use Nz\WordpressBundle\Entity\Post;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Sonata\CoreBundle\Model\ManagerInterface;
 
 /**
  * Description of StringModifier
@@ -226,7 +225,7 @@ class GalleryShortcodeModifier implements ModifierInterface
 
         return $this->options = array_merge(array(
             'media_class' => '\AppBundle\Entity\Media\Media',
-            'gallery' => '\AppBundle\Entity\Media\Gallery',
+            'gallery_class' => '\AppBundle\Entity\Media\Gallery',
             'gallery_has_media_class' => '\AppBundle\Entity\Media\GalleryHasMedia',
             'base_path' => '',
             'context' => 'default',

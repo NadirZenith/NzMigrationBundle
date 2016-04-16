@@ -50,14 +50,4 @@ class BooleanModifierTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($modifier->modify($value, $options), $result);
     }
-
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testReturnException()
-    {
-        $modifier = $this->getModifier();
-
-        $modifier->modify('exception');
-    }
 }
