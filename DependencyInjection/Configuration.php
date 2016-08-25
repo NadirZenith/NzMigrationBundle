@@ -34,6 +34,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('default')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('entity_manager')->info('Wp Entity Manager')->cannotBeEmpty()->defaultValue('default')->end()
 

@@ -54,12 +54,22 @@ class GalleryShortcodeModifier implements ModifierInterface
         return $em;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function findMedia($id)
     {
         $media = $this->mediaManager->findOneBy(['wpId' => $id]);
         return $media;
     }
 
+    /**
+     * @param $value Text with embedded wp shortcodes representing galleries
+     * @param array $options Options for processing purposes
+     * @return mixed The final text value with new shortcode style
+     * @throws \Exception If is required or something ...
+     */
     public function modify($value, array $options = array())
     {
         /* d($value); */
@@ -76,8 +86,8 @@ class GalleryShortcodeModifier implements ModifierInterface
         $new_gallery_tag = [];
         foreach ($groups as $group) {
             $medias = [];
-            foreach ($group as $wpid) {
 
+            foreach ($group as $wpid) {
                 $post = $this->getSourcePost($wpid);
                 if (!$post) {
                     continue;
@@ -126,8 +136,10 @@ class GalleryShortcodeModifier implements ModifierInterface
     }
 
     /**
-     * Finds a wordpress post with type attachment published 
-     *  
+     * Finds a wordpress post with type attachment published
+     *
+     * @param $id integer post id
+     * @return null | Object
      */
     private function getSourcePost($id)
     {
@@ -139,6 +151,14 @@ class GalleryShortcodeModifier implements ModifierInterface
             null : $post;
     }
 
+    /**
+     * @param $imgSrc Image path
+     * @param $title Image title
+     * @param $context Image context for organization
+     * @param null $createdAt Image creation date for organization
+     * @return mixed
+     * @throws \Exception If gallery media class is not found
+     */
     private function createMedia($imgSrc, $title, $context, $createdAt = null)
     {
 
@@ -146,7 +166,6 @@ class GalleryShortcodeModifier implements ModifierInterface
             throw new \Exception(sprintf('GalleryShortcodeModifier media class does not exist (%s)', $this->options['media_class']));
         }
         $media = new $this->options['media_class']();
-
 
         $media->setName($title);
         $media->setCreatedAt(isset($createdAt) ? $createdAt : new \DateTime);

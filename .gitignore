@@ -8,3 +8,4 @@ coverage
 composer.lock
 vendor
 .php_cs.cache
+.phpcomplete_extended
